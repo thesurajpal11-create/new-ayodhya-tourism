@@ -1,0 +1,26 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.pyd
+*.env
+.env
+.env.*
+# Virtual environments
+venv/
+.env/
+.venv/
+backend/venv/
+backend/.git/
+# Database files
+*.sqlite3
+*.db
+backend/ayodhya_tourism.db
+# Editor and OS files
+.DS_Store
+Thumbs.db
+# Distribution
+build/
+dist/
+*.egg-info/
