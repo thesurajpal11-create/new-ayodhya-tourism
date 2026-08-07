@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a Hotel Partner | Ramnagari Tourism</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar" id="navbar">
+            <div class="container nav-inner">
+                <a href="../index.html" class="brand">
+                    <span class="brand-mark">
+                        <img src="../images/logo.jpeg" alt="Ramnagari Tourism logo" class="brand-logo" onerror="this.style.display='none'">
+                        <span class="brand-fallback">RT</span>
+                    </span>
+                    <span class="brand-text">
+                        <strong>Ramnagari Tourism</strong>
+                        <small>Trusted Tour & Travel Services</small>
+                    </span>
+                </a>
+                <div class="nav-menu" id="navMenu">
+                    <a href="../index.html">Home</a>
+                    <a href="destinations.html">Destination</a>
+                    <a href="hotels.html">Hotels</a>
+                    <a href="booking.html">Book & Pay</a>
+                    <a href="cab.html">Cab Tariff</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-banner hotel-banner">
+            <div class="container page-banner-content">
+                <span class="section-script">Hotel Partner</span>
+                <h1>Become a Hotel Partner</h1>
+                <p>Grow your hotel business with Ramnagari Tourism and reach pilgrims looking for trusted stays.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <form class="content-card" id="partnerApplicationForm" style="max-width: 900px; margin: 0 auto;">
+                    <h2>Partner Application</h2>
+                    <p>Fill in your hotel details and our admin team will review your request.</p>
+                    <div class="cab-form-grid">
+                        <label class="cab-field">
+                            <span>Hotel Name</span>
+                            <input type="text" id="hotel_name" required>
+                        </label>
+                        <label class="cab-field">
+                            <span>Owner Name</span>
+                            <input type="text" id="owner_name" required>
+                        </label>
+                        <label class="cab-field">
+                            <span>Mobile Number</span>
+                            <input type="text" id="mobile_number" required>
+                        </label>
+                        <label class="cab-field">
+                            <span>Email</span>
+                            <input type="email" id="email" required>
+                        </label>
+                        <label class="cab-field" style="grid-column: 1 / -1;">
+                            <span>Hotel Address</span>
+                            <textarea id="hotel_address" required></textarea>
+                        </label>
+                        <label class="cab-field">
+                            <span>GST Number (Optional)</span>
+                            <input type="text" id="gst_number">
+                        </label>
+                        <label class="cab-field">
+                            <span>Number of Rooms</span>
+                            <input type="number" id="number_of_rooms" required>
+                        </label>
+                        <label class="cab-field">
+                            <span>Hotel Photos</span>
+                            <input type="text" id="hotel_photos" placeholder="Image URLs or notes">
+                        </label>
+                        <label class="cab-field">
+                            <span>ID Proof Upload</span>
+                            <input type="text" id="id_proof_path" placeholder="Upload reference">
+                        </label>
+                    </div>
+                    <div class="page-cta-row" style="margin-top: 18px;">
+                        <button type="submit" class="btn btn-primary">Submit Application</button>
+                    </div>
+                    <div class="hotel-status" id="partnerApplicationStatus">Please complete the form to apply.</div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/become-partner.js"></script>
+</body>
+</html>

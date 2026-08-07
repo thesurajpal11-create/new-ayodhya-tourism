@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Check cab tariff for Ayodhya local sightseeing and outstation trips to Varanasi, Prayagraj, Chitrakoot, Mathura, and Vindhyachal.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://thesurajpal11-create.github.io/tour-fortened09/pages/cab.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ramnagari Tourism">
+    <meta property="og:title" content="Ayodhya Cab Tariff | Local & Outstation Taxi">
+    <meta property="og:description" content="Transparent cab tariff for Ayodhya sightseeing and spiritual outstation routes with Ramnagari Tourism.">
+    <meta property="og:url" content="https://thesurajpal11-create.github.io/tour-fortened09/pages/cab.html">
+    <meta property="og:image" content="https://thesurajpal11-create.github.io/tour-fortened09/images/ayodhya.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Ayodhya Cab Tariff | Local Sightseeing & Outstation Taxi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar" id="navbar">
+            <div class="container nav-inner">
+                <a href="../index.html" class="brand">
+                    <span class="brand-mark">
+                        <img src="../images/logo.jpeg" alt="Ramnagari Tourism logo" class="brand-logo" onerror="this.style.display='none'">
+                        <span class="brand-fallback">RT</span>
+                    </span>
+                    <span class="brand-text">
+                        <strong>Ramnagari Tourism</strong>
+                        <small>Trusted Tour & Travel Services</small>
+                    </span>
+                </a>
+
+                <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <div class="nav-menu" id="navMenu">
+                    <a href="../index.html">Home</a>
+                    <a href="destinations.html">Destination</a>
+                    <a href="tour-packages.html">Tour Packages</a>
+                    <a href="hotels.html">Hotels</a>
+                    <a href="booking.html">Book & Pay</a>
+                    <a href="cab.html">Cab Tariff</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="tel:+917607745628" class="call-button">Call Now</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-banner cab-banner">
+            <div class="container page-banner-content">
+                <span class="section-script">Cab Tariff</span>
+                <h1>Check Cab Fare For Your Route</h1>
+                <p>Select your pickup place and destination to see updated rates. Chat with our team on WhatsApp for custom plans or special requests.</p>
+            </div>
+        </section>
+
+        <section class="section cab-fare-section">
+            <div class="container">
+                <div class="cab-fare-layout">
+                    <form class="content-card cab-route-form" id="cabRouteForm" novalidate>
+                        <h2>Plan Your Cab Route</h2>
+                        <p class="cab-form-intro">Choose source and destination to get instant fare estimates for all vehicle types.</p>
+
+                        <div class="cab-form-grid">
+                            <label class="cab-field">
+                                <span>Pickup Place (Source)</span>
+                                <select id="cabSource" required></select>
+                            </label>
+
+                            <div class="cab-swap-wrap">
+                                <button type="button" class="cab-swap-btn" id="swapRoute" aria-label="Swap source and destination">
+                                    ⇄
+                                </button>
+                            </div>
+
+                            <label class="cab-field">
+                                <span>Destination</span>
+                                <select id="cabDestination" required></select>
+                            </label>
+
+                            <label class="cab-field">
+                                <span>Trip Type</span>
+                                <select id="cabTripType">
+                                    <option value="one-way">One Way</option>
+                                    <option value="round">Round Trip</option>
+                                    <option value="local">Local Full Day</option>
+                                </select>
+                            </label>
+
+                            <label class="cab-field">
+                                <span>Pickup Date (Optional)</span>
+                                <input type="date" id="cabPickupDate">
+                            </label>
+                        </div>
+
+                        <div class="cab-team-banner">
+                            <div>
+                                <h3>Need a custom route or group booking?</h3>
+                                <p>Our team can share the best vehicle, hotel stop, and final fare for your plan.</p>
+                            </div>
+                            <a
+                                href="https://wa.me/917607745628?text=Hello%20Ramnagari%20Tourism%2C%20I%20need%20help%20planning%20a%20custom%20cab%20route."
+                                class="btn btn-primary"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                Chat With Our Team
+                            </a>
+                        </div>
+                    </form>
+
+                    <div class="cab-results-panel">
+                        <div class="cab-route-summary" id="cabRouteSummary" hidden></div>
+
+                        <div class="cab-rate-placeholder content-card" id="cabRatePlaceholder">
+                            <h3>Select Your Route</h3>
+                            <p>Choose pickup place and destination on the left to view updated cab rates for Sedan, SUV, Innova, and Tempo Traveller.</p>
+                        </div>
+
+                        <div class="cab-rate-results" id="cabRateResults" hidden></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-heading">
+                    <span class="section-script">Vehicle Options</span>
+                    <h2>Comfortable Cabs For Every Group Size</h2>
+                </div>
+                <div class="simple-grid three-grid">
+                <article class="content-card">
+                    <h2>Sedan</h2>
+                    <p>Comfortable option for local sightseeing, station pickup, and short outstation rides.</p>
+
+                    <img src="../images/sedan.jpg" class="car-image">
+                    <ul>
+                        <li>Seating: 4 passengers</li>
+                        <li>Best for couples and small families</li>
+                        <li>Rate: From ₹14/km · Local day from ₹2,200</li>
+                    </ul>
+                </article>
+                <article class="content-card">
+                    <h2>SUV</h2>
+                    <p>Suitable for family travel with extra luggage space and a comfortable long-route experience.</p>
+                    <ul>
+                        <li>Seating: 6 passengers</li>
+                        <li>Best for outstation road trips</li>
+                        <li>Rate: From ₹16/km · Local day from ₹2,800</li>
+                    </ul>
+                </article>
+                <article class="content-card">
+                    <h2>Innova</h2>
+                    <p>Popular premium family vehicle for pilgrim routes, hotel travel, and temple circuits.</p>
+                    <ul>
+                        <li>Seating: 7 passengers</li>
+                        <li>Best for family pilgrimage tours</li>
+                        <li>Rate: From ₹18/km · Local day from ₹3,200</li>
+                    </ul>
+                </article>
+                <article class="content-card">
+                    <h2>Tempo Traveller</h2>
+                    <p>Ideal for larger groups attending darshan, family functions, or extended outstation trips.</p>
+                    <ul>
+                        <li>Seating: 12 passengers</li>
+                        <li>Best for groups and yatra teams</li>
+                        <li>Rate: From ₹22/km · Local day from ₹4,500</li>
+                    </ul>
+                </article>
+                <article class="content-card">
+                    <h2>Local Cab Service</h2>
+                    <p>Book city rides for temple visits, sightseeing routes, hotels, and railway station transfers.</p>
+                    <div class="page-cta-row">
+                        <a href="#cabRouteForm" class="btn btn-primary">Check Local Fare</a>
+                    </div>
+                </article>
+                <article class="content-card">
+                    <h2>Discuss Your Trip</h2>
+                    <p>Share your route on WhatsApp and our team will confirm the best vehicle, timing, and final fare.</p>
+                    <div class="page-cta-row">
+                        <a href="https://wa.me/917607745628" class="btn btn-secondary" target="_blank" rel="noopener">WhatsApp Us</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <strong>Ramnagari Tourism</strong>
+                <p>Trusted tour packages, cab booking, and hotel assistance from Ayodhya, Uttar Pradesh.</p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/ayodhyaramnagari" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+                    <a href="https://www.youtube.com/@AR_Tourism" target="_blank" rel="noopener" aria-label="YouTube">YouTube</a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <a href="tour-packages.html">Tour Packages</a>
+                <a href="cab.html">Cab Tariff</a>
+                <a href="hotels.html">Hotels</a>
+                <a href="booking.html">Book & Pay</a>
+                <a href="destinations.html">Destinations</a>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <a href="tel:+917607745628">+91 7607745628</a>
+                <a href="mailto:ayodhyaramnagritourism@gmail.com">ayodhyaramnagritourism@gmail.com</a>
+                <a href="https://wa.me/917607745628" target="_blank" rel="noopener">WhatsApp Chat</a>
+                <span>Ayodhya, Uttar Pradesh, India</span>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; <span id="currentYear"></span> Ramnagari Tourism. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop" type="button" aria-label="Scroll to top" hidden>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <div class="floating-contact">
+        <a href="tel:+917607745628" class="floating-btn call-float" aria-label="Call Ramnagari Tourism">Call</a>
+        <a href="https://wa.me/917607745628" class="floating-btn whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp Ramnagari Tourism">WhatsApp</a>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/cab.js"></script>
+</body>
+</html>

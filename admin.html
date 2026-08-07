@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Ramnagari Tourism</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="container nav-inner">
+                <a href="../index.html" class="brand">
+                    <span class="brand-mark">
+                        <img src="../images/logo.jpeg" alt="Ramnagari Tourism logo" class="brand-logo" onerror="this.style.display='none'">
+                        <span class="brand-fallback">RT</span>
+                    </span>
+                    <span class="brand-text">
+                        <strong>Ramnagari Tourism</strong>
+                        <small>Admin Panel</small>
+                    </span>
+                </a>
+                <div class="nav-menu is-open-static">
+                    <a href="../index.html">Website</a>
+                    <a href="hotels.html">Customer Hotels Page</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-banner admin-banner">
+            <div class="container page-banner-content">
+                <span class="section-script">Admin Panel</span>
+                <h1>Add hotels, room types, and prices.</h1>
+                <p>After saving hotel and room price here, customers can see category, price, rooms, amenities, and distance on the Hotels page.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container admin-layout">
+                <form class="content-card admin-form" id="adminLoginForm">
+                    <h2>Admin Login</h2>
+                    <label>
+                        <span>Email</span>
+                        <input type="email" id="adminEmail" placeholder="admin@example.com" autocomplete="username" required>
+                    </label>
+                    <label>
+                        <span>Password</span>
+                        <input type="password" id="adminPassword" placeholder="Enter admin password" autocomplete="current-password" required>
+                    </label>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <p class="admin-message" id="adminLoginMessage"></p>
+                </form>
+
+                <form class="content-card admin-form admin-hotel-form is-hidden" id="addHotelForm">
+                    <h2>Add Hotel</h2>
+                    <div class="admin-two-fields">
+                        <label>
+                            <span>Owner Name</span>
+                            <input type="text" id="ownerName" placeholder="Shri Ram Hotel Group" autocomplete="organization" required>
+                        </label>
+                        <label>
+                            <span>Owner Email</span>
+                            <input type="email" id="ownerEmail" placeholder="owner@example.com" autocomplete="email" required>
+                        </label>
+                    </div>
+                    <label>
+                        <span>Owner Phone</span>
+                        <input type="tel" id="ownerPhone" placeholder="9876543210" autocomplete="tel">
+                    </label>
+                    <div class="admin-two-fields">
+                        <label>
+                            <span>Destination</span>
+                            <select id="hotelDestination" required></select>
+                        </label>
+                        <label>
+                            <span>Hotel Type</span>
+                            <select id="hotelCategory" required>
+                                <option value="Budget">Budget</option>
+                                <option value="2 Star">2 Star</option>
+                                <option value="3 Star">3 Star</option>
+                                <option value="4 Star">4 Star</option>
+                            </select>
+                        </label>
+                    </div>
+                    <label>
+                        <span>Hotel Name</span>
+                        <input type="text" id="realHotelName" placeholder="Hotel Ram Palace" autocomplete="organization" required>
+                    </label>
+                    <label>
+                        <span>Address</span>
+                        <input type="text" id="hotelAddress" placeholder="Near Ram Mandir, Ayodhya" autocomplete="street-address">
+                    </label>
+                    <div class="admin-two-fields">
+                        <label>
+                            <span>Nearby Place</span>
+                            <input type="text" id="nearbyPlace" placeholder="Near Ram Mandir">
+                        </label>
+                        <label>
+                            <span>Distance KM</span>
+                            <input type="number" id="hotelDistance" min="0" step="0.1" value="1.5" required>
+                        </label>
+                    </div>
+                    <label>
+                        <span>Amenities</span>
+                        <input type="text" id="hotelAmenities" value="AC Room, WiFi, Parking, Breakfast">
+                    </label>
+                    <div class="admin-two-fields">
+                        <label>
+                            <span>Check-in</span>
+                            <input type="text" id="checkInTime" value="12:00 PM">
+                        </label>
+                        <label>
+                            <span>Check-out</span>
+                            <input type="text" id="checkOutTime" value="11:00 AM">
+                        </label>
+                    </div>
+                    <label>
+                        <span>Rooms Available</span>
+                        <input type="number" id="roomsAvailable" min="1" value="15" required>
+                    </label>
+                    <div class="admin-two-fields">
+                        <label>
+                            <span>Base Price</span>
+                            <input type="number" id="basePrice" min="0" value="2200" required>
+                        </label>
+                        <label>
+                            <span>Selling Price</span>
+                            <input type="number" id="sellingPrice" min="0" value="3000" required>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="addHotelButton">Add Hotel</button>
+                    <p class="admin-message" id="addHotelMessage" role="status" aria-live="polite"></p>
+                </form>
+
+                <section class="content-card admin-form" style="margin-top: 24px;">
+                    <h2>Hotel Partner Management</h2>
+                    <p class="admin-message" id="partnerManagementMessage" role="status" aria-live="polite"></p>
+
+                    <form id="createPartnerForm" style="margin-bottom: 18px;">
+                        <div class="admin-two-fields">
+                            <label>
+                                <span>Partner Name</span>
+                                <input type="text" id="partnerName" placeholder="Partner name" required>
+                            </label>
+                            <label>
+                                <span>Email</span>
+                                <input type="email" id="partnerEmail" placeholder="partner@example.com" required>
+                            </label>
+                        </div>
+                        <div class="admin-two-fields">
+                            <label>
+                                <span>Phone</span>
+                                <input type="text" id="partnerPhone" placeholder="Phone number">
+                            </label>
+                            <label>
+                                <span>Username</span>
+                                <input type="text" id="partnerUsername" placeholder="Optional username">
+                            </label>
+                        </div>
+                        <label>
+                            <span>Password</span>
+                            <input type="password" id="partnerPassword" placeholder="Leave blank for auto-generated password">
+                        </label>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 12px;">Create Partner Account</button>
+                    </form>
+
+                    <h3>Pending Applications</h3>
+                    <div id="partnerApplicationsList" style="margin-bottom: 20px;"></div>
+
+                    <h3>Partner Accounts</h3>
+                    <div id="partnerAccountsList"></div>
+                </section>
+
+                <section class="content-card admin-form is-hidden" id="localGuidesAdminPanel" style="margin-top: 24px;">
+                    <h2>Verified Local Guides</h2>
+                    <p class="admin-message">Only administrators can add volunteers. Every guide added here is marked verified.</p>
+                    <form id="addLocalGuideForm">
+                        <div class="admin-two-fields">
+                            <label><span>Guide name</span><input type="text" id="localGuideName" required></label>
+                            <label><span>WhatsApp / call number</span><input type="tel" id="localGuidePhone" placeholder="9876543210" required></label>
+                        </div>
+                        <div class="admin-two-fields">
+                            <label><span>Languages</span><input type="text" id="localGuideLanguages" value="Hindi, English"></label>
+                            <label><span>Online now?</span><select id="localGuideOnline"><option value="true">Yes</option><option value="false">No</option></select></label>
+                        </div>
+                        <label><span>Can help with</span><input type="text" id="localGuideSpecialties" value="Food, Ram Mandir crowd, Parking"></label>
+                        <button type="submit" class="btn btn-primary">Add Verified Guide</button>
+                        <p class="admin-message" id="localGuideAdminMessage" aria-live="polite"></p>
+                    </form>
+                    <div id="localGuidesAdminList"></div>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/admin-hotels.js"></script>
+    <script src="../js/admin.js"></script>
+    <script src="../js/local-guides-admin.js"></script>
+</body>
+</html>

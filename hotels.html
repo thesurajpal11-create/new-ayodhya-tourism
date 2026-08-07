@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotels | Ramnagari Tourism</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar" id="navbar">
+            <div class="container nav-inner">
+                <a href="../index.html" class="brand">
+                    <span class="brand-mark">
+                        <img src="../images/logo.jpeg" alt="Ramnagari Tourism logo" class="brand-logo" onerror="this.style.display='none'">
+                        <span class="brand-fallback">RT</span>
+                    </span>
+                    <span class="brand-text">
+                        <strong>Ramnagari Tourism</strong>
+                        <small>Trusted Tour & Travel Services</small>
+                    </span>
+                </a>
+
+                <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <div class="nav-menu" id="navMenu">
+                    <a href="../index.html">Home</a>
+                    <a href="destinations.html">Destination</a>
+                    <a href="tour-packages.html">Tour Packages</a>
+                    <a href="hotels.html">Hotels</a>
+                    <a href="booking.html">Book & Pay</a>
+                    <a href="cab.html">Cab Tariff</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="tel:+917607745628" class="call-button">Call Now</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-banner hotel-banner">
+            <div class="container page-banner-content">
+                <span class="section-script">Hotel Options</span>
+                <h1>Choose hotel type, price, rooms, and distance from your tour place.</h1>
+                <p>Customers see hotel category and comfort details. Real hotel name and owner details stay private for admin.</p>
+            </div>
+        </section>
+
+        <section class="section hotel-browser-section">
+            <div class="container">
+                <div class="content-card" style="margin-bottom: 20px;">
+                    <h2 style="margin-bottom: 8px;">View prices by role</h2>
+                    <p style="margin-bottom: 16px;">Customers see public pricing. Hotel partners see partner pricing.</p>
+                    <form class="hotel-filter-bar" id="hotelAuthForm">
+                        <label>
+                            <span>Email</span>
+                            <input type="email" id="hotelAuthEmail" placeholder="Enter your email" required>
+                        </label>
+                        <label>
+                            <span>Password</span>
+                            <input type="password" id="hotelAuthPassword" placeholder="Enter your password" required>
+                        </label>
+                        <label>
+                            <span>Role</span>
+                            <select id="hotelAuthRole">
+                                <option value="customer">Customer</option>
+                                <option value="hotel_partner">Hotel Partner</option>
+                            </select>
+                        </label>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <button type="button" class="btn btn-secondary" id="hotelAuthLogoutBtn">Logout</button>
+                    </form>
+                    <div class="hotel-status" id="hotelAuthStatus">Public pricing is active.</div>
+                </div>
+
+                <form class="hotel-filter-bar" id="hotelFilterForm">
+                    <label>
+                        <span>Destination</span>
+                        <select id="hotelDestinationSelect" required>
+                            <option value="">Loading destinations...</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        <span>Hotel Type</span>
+                        <select id="hotelCategorySelect">
+                            <option value="">All hotel types</option>
+                            <option value="Budget">Budget</option>
+                            <option value="2 Star">2 Star</option>
+                            <option value="3 Star">3 Star</option>
+                            <option value="4 Star">4 Star</option>
+                        </select>
+                    </label>
+
+                    <button type="submit" class="btn btn-primary">View Hotels</button>
+                </form>
+
+                <div class="hotel-status" id="hotelStatus">Select a destination to view hotel options.</div>
+                <div class="hotel-options-grid" id="hotelOptionsGrid"></div>
+            </div>
+        </section>
+
+        <section class="section hotel-help-section">
+            <div class="container simple-grid two-grid">
+                <article class="content-card">
+                    <h2>What customer can compare</h2>
+                    <ul>
+                        <li>Hotel type: Budget, 2 Star, 3 Star, 4 Star</li>
+                        <li>Selling price per room</li>
+                        <li>Available rooms</li>
+                        <li>Distance from tour destination</li>
+                        <li>Nearby place, amenities, check-in and check-out timing</li>
+                    </ul>
+                </article>
+                <article class="content-card">
+                    <h2>Ready to book?</h2>
+                    <p>After choosing a hotel option, customer can continue to secure booking and advance payment.</p>
+                    <div class="page-cta-row">
+                        <a href="booking.html" class="btn btn-primary">Book & Pay</a>
+                        <a href="become-partner.html" class="btn btn-secondary">Become a Hotel Partner</a>
+                        <a href="tel:+917607745628" class="btn btn-secondary">Call Now</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <strong>Ramnagari Tourism</strong>
+                <p>Trusted tour packages, cab booking, and hotel assistance from Ayodhya, Uttar Pradesh.</p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/ayodhyaramnagari" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+                    <a href="https://www.youtube.com/@AR_Tourism" target="_blank" rel="noopener" aria-label="YouTube">YouTube</a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <a href="tour-packages.html">Tour Packages</a>
+                <a href="cab.html">Cab Tariff</a>
+                <a href="hotels.html">Hotels</a>
+                <a href="booking.html">Book & Pay</a>
+                <a href="destinations.html">Destinations</a>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <a href="tel:+917607745628">+91 7607745628</a>
+                <a href="mailto:ayodhyaramnagritourism@gmail.com">ayodhyaramnagritourism@gmail.com</a>
+                <a href="https://wa.me/917607745628" target="_blank" rel="noopener">WhatsApp Chat</a>
+                <span>Ayodhya, Uttar Pradesh, India</span>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; <span id="currentYear"></span> Ramnagari Tourism. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop" type="button" aria-label="Scroll to top" hidden>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <div class="floating-contact">
+        <a href="tel:+917607745628" class="floating-btn call-float" aria-label="Call Ramnagari Tourism">Call</a>
+        <a href="https://wa.me/917607745628" class="floating-btn whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp Ramnagari Tourism">WhatsApp</a>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/hotels.js"></script>
+</body>
+</html>

@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Tour | Ramnagari Tourism</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        /* Premium Color Design System & Variables */
+        :root {
+            --primary-blue: #2563EB;
+            --primary-glow: rgba(37, 99, 235, 0.35);
+            --secondary-slate: #0F172A;
+            --accent-amber: #F59E0B;
+            --success-green: #22C55E;
+            --bg-glass: rgba(255, 255, 255, 0.85);
+            --border-glass: rgba(255, 255, 255, 0.6);
+            --card-radius: 24px;
+            --smooth-transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow-subtle: 0 10px 30px -10px rgba(15, 23, 42, 0.04);
+            --shadow-premium: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
+        }
+
+        body {
+            background-color: #F8FAFC;
+            color: var(--secondary-slate);
+            font-family: 'Manrope', sans-serif;
+        }
+
+        /* Hero Banner Redesign */
+        .booking-banner {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            min-height: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 24px;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .booking-banner::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.5) 0%, rgba(15, 23, 42, 0.75) 100%);
+            z-index: 1;
+        }
+
+        .page-banner-content {
+            position: relative;
+            z-index: 2;
+            max-width: 850px;
+            margin: 0 auto;
+            animation: fadeUp 0.8s ease-out;
+        }
+
+        .page-banner-content h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+        }
+
+        .page-banner-content p {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            margin-bottom: 32px;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .hero-trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Responsive Two-Column Layout */
+        .booking-layout-container {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 40px;
+            align-items: start;
+            margin-top: -60px;
+            position: relative;
+            z-index: 10;
+            padding-bottom: 80px;
+        }
+
+        /* LEFT SIDE: Visual Preview Panel & Selection Cards */
+        .visual-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Selection Card Grids */
+        .selection-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--secondary-slate);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-selection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        /* Premium Selectable Cards */
+        .interactive-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 2px solid transparent;
+            box-shadow: var(--shadow-subtle);
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--smooth-transition);
+            position: relative;
+        }
+
+        .interactive-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-premium);
+        }
+
+        .interactive-card.is-selected {
+            border-color: var(--primary-blue);
+            background-color: #EFF6FF;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15);
+        }
+
+        .interactive-card-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            transition: var(--smooth-transition);
+        }
+
+        .interactive-card:hover .interactive-card-img {
+            transform: scale(1.06);
+        }
+
+        .interactive-card-info {
+            padding: 12px;
+        }
+
+        .interactive-card-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--secondary-slate);
+            margin-bottom: 4px;
+        }
+
+        .interactive-card-subtitle {
+            font-size: 0.8rem;
+            color: #64748B;
+        }
+
+        /* Dynamic Showcase Cards (Destination, Hotel, Cab) */
+        .showcase-preview-card {
+            background: #ffffff;
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-premium);
+            transition: var(--smooth-transition);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            display: flex;
+            flex-direction: row;
+        }
+
+        .showcase-preview-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .showcase-img-container {
+            width: 35%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .showcase-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--smooth-transition);
+        }
+
+        .showcase-preview-card:hover .showcase-img {
+            transform: scale(1.05);
+        }
+
+        .showcase-content {
+            padding: 24px;
+            width: 65%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .showcase-rating {
+            color: var(--accent-amber);
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .showcase-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--secondary-slate);
+            margin-bottom: 8px;
+        }
+
+        .showcase-desc {
+            font-size: 0.88rem;
+            color: #64748B;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .showcase-badge {
+            align-self: flex-start;
+            background: #EFF6FF;
+            color: var(--primary-blue);
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 30px;
+        }
+
+        /* RIGHT SIDE: Floating Glassmorphism Booking Card */
+        .glass-booking-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--card-radius);
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12);
+            padding: 36px;
+            position: sticky;
+            top: 40px;
+        }
+
+        .glass-booking-card h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--secondary-slate);
+            margin-bottom: 24px;
+            border-bottom: 1.5px solid rgba(226, 232, 240, 0.8);
+            padding-bottom: 12px;
+        }
+
+        /* Hidden standard elements to prevent breaking the original API code */
+        .hidden-select-native {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        /* Custom Booking Tabs */
+        .booking-tabs {
+            display: flex;
+            background: rgba(15, 23, 42, 0.05);
+            padding: 6px;
+            border-radius: 14px;
+            margin-bottom: 24px;
+        }
+
+        .booking-tab {
+            flex: 1;
+            padding: 12px 16px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border: none;
+            background: transparent;
+            color: #64748B;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: var(--smooth-transition);
+            text-align: center;
+        }
+
+        .booking-tab.is-active {
+            background: #ffffff;
+            color: var(--primary-blue);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Forms spacing */
+        .booking-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Inputs wrapper and icons positioning */
+        .field-label {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--secondary-slate);
+        }
+
+        .input-icon-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon-wrapper svg {
+            position: absolute;
+            left: 16px;
+            width: 18px;
+            height: 18px;
+            color: #94A3B8;
+            pointer-events: none;
+        }
+
+        .input-icon-wrapper input,
+        .input-icon-wrapper select {
+            width: 100%;
+            padding: 14px 16px 14px 46px;
+            border-radius: 12px;
+            border: 1.5px solid rgba(226, 232, 240, 0.8);
+            background-color: #ffffff;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            outline: none;
+            transition: var(--smooth-transition);
+        }
+
+        .input-icon-wrapper input:focus,
+        .input-icon-wrapper select:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .booking-two-fields {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 16px;
+        }
+
+        .booking-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        /* Modern Premium Buttons */
+        .btn-premium {
+            width: 100%;
+            padding: 16px 24px;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: var(--smooth-transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .btn-premium-primary {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #1D4ED8 100%);
+            color: #ffffff;
+            box-shadow: 0 8px 30px var(--primary-glow);
+        }
+
+        .btn-premium-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(37, 99, 235, 0.5);
+        }
+
+        .btn-premium-secondary {
+            background: #EFF6FF;
+            color: var(--primary-blue);
+            border: 1.5px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-premium-secondary:hover {
+            background: #DBEAFE;
+        }
+
+        /* Dynamic Estimate Card */
+        .booking-summary {
+            background: #ffffff;
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow-premium);
+            padding: 24px;
+            margin-top: 30px;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .summary-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 24px;
+            color: #64748B;
+        }
+
+        .summary-empty-icon {
+            width: 44px;
+            height: 44px;
+            color: #CBD5E1;
+            margin-bottom: 12px;
+        }
+
+        /* Payment Trust Partners section */
+        .trust-partners-panel {
+            margin-top: 24px;
+            text-align: center;
+            border-top: 1.5px solid rgba(226, 232, 240, 0.8);
+            padding-top: 20px;
+        }
+
+        .trust-partners-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #94A3B8;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 12px;
+        }
+
+        .trust-partners-icons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            opacity: 0.75;
+        }
+
+        .trust-partners-icons svg {
+            height: 20px;
+            fill: #64748B;
+        }
+
+        /* Dynamic Keyframe Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Layout Overrides */
+        @media (max-width: 991px) {
+            .booking-layout-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .glass-booking-card {
+                position: static;
+            }
+            .showcase-preview-card {
+                flex-direction: column;
+            }
+            .showcase-img-container {
+                width: 100%;
+                height: 200px;
+            }
+            .showcase-content {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar" id="navbar">
+            <div class="container nav-inner">
+                <a href="../index.html" class="brand">
+                    <span class="brand-mark">
+                        <img src="../images/logo.jpeg" alt="Ramnagari Tourism logo" class="brand-logo" onerror="this.style.display='none'">
+                        <span class="brand-fallback">RT</span>
+                    </span>
+                    <span class="brand-text">
+                        <strong>Ramnagari Tourism</strong>
+                        <small>Secure Tour Booking</small>
+                    </span>
+                </a>
+
+                <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <div class="nav-menu" id="navMenu">
+                    <a href="../index.html">Home</a>
+                    <a href="destinations.html">Destination</a>
+                    <a href="tour-packages.html">Tour Packages</a>
+                    <a href="hotels.html">Hotels</a>
+                    <a href="booking.html">Book & Pay</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-banner booking-banner" style="background-image: url('../images/banner.jpeg');">
+            <div class="container page-banner-content">
+                <span class="section-script" style="color: var(--accent-amber); font-family: 'Allura', cursive; font-size: 2.2rem; display: block; margin-bottom: 8px;">Explore Ayodhya</span>
+                <h1>Book Your Ayodhya Trip in Minutes</h1>
+                <p>Secure hotel, cab, and tour booking with instant confirmation.</p>
+
+                <div class="hero-trust-badges">
+                    <div class="trust-badge">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        Secure Booking
+                    </div>
+                    <div class="trust-badge">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Instant Confirmation
+                    </div>
+                    <div class="trust-badge">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        24×7 Support
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" style="background-color: #F8FAFC; padding: 40px 0 100px;">
+            <div class="container booking-layout-container">
+                
+                <!-- LEFT PANEL: Dynamic Visual Selections and Showcase Displays -->
+                <div class="visual-panel">
+                    
+                    <!-- Destination Selection Cards -->
+                    <div>
+                        <div class="selection-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            Select Destination
+                        </div>
+                        <div class="card-selection-grid" id="uiDestinationsContainer">
+                            <!-- Populated Dynamically via matching script -->
+                        </div>
+                    </div>
+
+                    <!-- Hotel Selection Cards -->
+                    <div>
+                        <div class="selection-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            Choose Hotel Tier
+                        </div>
+                        <div class="card-selection-grid" id="uiHotelsContainer">
+                            <!-- Populated Dynamically via matching script -->
+                        </div>
+                    </div>
+
+                    <!-- Cab Selection Cards -->
+                    <div>
+                        <div class="selection-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="3" width="15" height="13" rx="2" ry="2"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                            Choose Cab Comfort Class
+                        </div>
+                        <div class="card-selection-grid" id="uiCabsContainer">
+                            <!-- Populated Dynamically via matching script -->
+                        </div>
+                    </div>
+
+                    <!-- Visual Panel Showcase Previews -->
+                    <div class="selection-title" style="margin-top: 15px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        Your Curated Showcase Preview
+                    </div>
+                    
+                    <!-- Destination Preview Card -->
+                    <div class="showcase-preview-card" id="previewDestinationCard">
+                        <div class="showcase-img-container">
+                            <img class="showcase-img" id="showcaseDestImg" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" alt="Destination Preview">
+                        </div>
+                        <div class="showcase-content">
+                            <span class="showcase-rating">⭐⭐⭐⭐⭐ (4.9/5 Rating)</span>
+                            <h3 class="showcase-title" id="showcaseDestTitle">Ayodhya Sacred Corridor</h3>
+                            <p class="showcase-desc" id="showcaseDestDesc">Experience standard spiritual landmarks, deep temple structures, and local sacred heritage.</p>
+                            <span class="showcase-badge">Authentic Cultural Route</span>
+                        </div>
+                    </div>
+
+                    <!-- Hotel Preview Card -->
+                    <div class="showcase-preview-card" id="previewHotelCard">
+                        <div class="showcase-img-container">
+                            <img class="showcase-img" id="showcaseHotelImg" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80" alt="Hotel Preview">
+                        </div>
+                        <div class="showcase-content">
+                            <span class="showcase-rating">⭐⭐⭐⭐ (Comfort Assured)</span>
+                            <h3 class="showcase-title" id="showcaseHotelTitle">Selected Hotel Tier</h3>
+                            <p class="showcase-desc" id="showcaseHotelDesc">Includes room service, modern basic amenities, and location near primary transport hubs.</p>
+                            <span class="showcase-badge">Clean &amp; Verified</span>
+                        </div>
+                    </div>
+
+                    <!-- Cab Preview Card -->
+                    <div class="showcase-preview-card" id="previewCabCard">
+                        <div class="showcase-img-container">
+                            <img class="showcase-img" id="showcaseCabImg" src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80" alt="Cab Preview">
+                        </div>
+                        <div class="showcase-content">
+                            <span class="showcase-rating">⭐⭐⭐⭐⭐ (Highly Rated Drivers)</span>
+                            <h3 class="showcase-title" id="showcaseCabTitle">Private AC Cab Class</h3>
+                            <p class="showcase-desc" id="showcaseCabDesc">Enjoy private chauffeured transfers, reliable toll management, and secure travel.</p>
+                            <span class="showcase-badge">Experienced Drivers</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT PANEL: Glassmorphism Booking card + Summary -->
+                <div class="glass-booking-card">
+                    
+                    <!-- Hidden Select tags to keep original booking.js functional -->
+                    <div style="display: none !important;">
+                        <select id="destinationSelect" required></select>
+                        <select id="hotelCategorySelect" required></select>
+                        <select id="hotelOptionSelect"></select>
+                        <select id="cabTypeSelect" required></select>
+                    </div>
+
+                    <!-- Authorization Section Toggle -->
+                    <div class="booking-tabs" role="tablist" aria-label="Customer access">
+                        <button type="button" class="booking-tab is-active" id="loginTab">Login</button>
+                        <button type="button" class="booking-tab" id="signupTab">Sign Up</button>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form class="booking-form" id="loginForm">
+                        <h2 style="font-size: 1.25rem; border:0; padding:0; margin-bottom: 5px;">Secure Login</h2>
+                        <label class="field-label">
+                            <span>Email Address</span>
+                            <div class="input-icon-wrapper">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                <input type="email" id="loginEmail" autocomplete="email" required>
+                            </div>
+                        </label>
+                        <label class="field-label">
+                            <span>Password</span>
+                            <div class="input-icon-wrapper">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                <input type="password" id="loginPassword" autocomplete="current-password" required>
+                            </div>
+                        </label>
+                        <button type="submit" class="btn-premium btn-premium-primary" style="margin-top: 10px;">Login secure →</button>
+                    </form>
+
+                    <!-- Signup Form -->
+                    <form class="booking-form is-hidden" id="signupForm">
+                        <h2 style="font-size: 1.25rem; border:0; padding:0; margin-bottom: 5px;">Create Account</h2>
+                        <label class="field-label">
+                            <span>Name</span>
+                            <div class="input-icon-wrapper">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                <input type="text" id="signupName" autocomplete="name" required>
+                            </div>
+                        </label>
+                        <label class="field-label">
+                            <span>Email</span>
+                            <div class="input-icon-wrapper">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                <input type="email" id="signupEmail" autocomplete="email" required>
+                            </div>
+                        </label>
+                        <label class="field-label">
+                            <span>Phone</span>
+                            <div class="input-icon-wrapper">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                <input type="tel" id="signupPhone" autocomplete="tel">
+                            </div>
+                        </label>
+                        <label class="field-label">
+                            <span>Password</span>
+                            <div class="input-icon-wrapper">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                <input type="password" id="signupPassword" autocomplete="new-password" required>
+                            </div>
+                        </label>
+                        <button type="submit" class="btn-premium btn-premium-primary" style="margin-top: 10px;">Register Account →</button>
+                    </form>
+                    <p class="booking-message" id="authMessage" aria-live="polite"></p>
+
+                    <!-- Real Form Parameters details layout -->
+                    <form class="booking-form" id="bookingForm" style="margin-top: 30px;">
+                        <h2>Trip Parameters</h2>
+                        
+                        <div class="booking-two-fields">
+                            <label class="field-label">
+                                <span>No. of Tourists</span>
+                                <div class="input-icon-wrapper">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                    <input type="number" id="touristsInput" min="1" value="2" required>
+                                </div>
+                            </label>
+
+                            <label class="field-label">
+                                <span>Stay Duration (Days)</span>
+                                <div class="input-icon-wrapper">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                    <input type="number" id="stayDaysInput" min="1" value="1" required>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="booking-actions">
+                            <button type="button" class="btn-premium btn-premium-secondary" id="estimateButton">Get Realtime Estimate</button>
+                            <button type="submit" class="btn-premium btn-premium-primary" id="bookButton">Continue Secure Booking →</button>
+                        </div>
+                        <p class="booking-message" id="bookingMessage" aria-live="polite"></p>
+                    </form>
+
+                    <!-- Pricing Summary Output Area -->
+                    <aside class="booking-summary" id="bookingSummary">
+                        <div class="summary-empty">
+                            <svg class="summary-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                            <p style="font-weight: 700; color: var(--secondary-slate); margin-bottom: 4px;">No estimate calculated yet.</p>
+                            <span style="font-size: 0.85rem;">Click 'Get Realtime Estimate' above.</span>
+                        </div>
+                    </aside>
+
+                    <!-- Trust badging secure payments -->
+                    <div class="trust-partners-panel">
+                        <div class="trust-partners-label">Secure Encrypted Transactions</div>
+                        <div class="trust-partners-icons">
+                            <!-- Visa -->
+                            <svg viewBox="0 0 24 24" width="36" height="24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5.4 14H15.1l1.1-4.8c.1-.4.4-.7.8-.7h1.4c.2 0 .4.1.5.3.1.2 0 .5-.1.7l-1.4 4.5zm-5.2-4.5c.1-.3.4-.5.7-.5h1.2c.2 0 .4.1.5.3s0 .5-.1.7l-1.3 4c-.1.3-.4.5-.7.5h-1.2c-.2 0-.4-.1-.5-.3s0-.5.1-.7l1.3-4zM7.2 16c-.2 0-.4-.1-.5-.3L5.1 11.2c0-.2 0-.4.1-.5.1-.1.3-.2.5-.2h1.5c.3 0 .6.2.7.5l.8 2.7 1.6-3.2c.1-.2.3-.3.6-.3h1.4c.2 0 .4.1.5.3s0 .5-.1.7l-2.6 5.1c-.2.3-.5.5-.8.5H7.2z"/></svg>
+                            <!-- Mastercard -->
+                            <svg viewBox="0 0 24 24" width="36" height="24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2 14c-1.1 0-2-.9-2-2v-4c0-1.1.9-2 2-2s2 .9 2 2v4c0 1.1-.9 2-2 2zm-6-2c0 1.1-.9 2-2 2s-2-.9-2-2v-4c0-1.1.9-2 2-2s2 .9 2 2v4zm10-2h2v2h-2v-2z"/></svg>
+                            <!-- UPI -->
+                            <svg viewBox="0 0 24 24" width="36" height="24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm2-4H9V9h6v3z"/></svg>
+                        </div>
+                        <div style="font-size: 0.72rem; color: #94A3B8; margin-top: 10px; font-weight: 700;">SSL ENCRYPTED / RAZORPAY GATEWAY</div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <strong>Ramnagari Tourism</strong>
+                <p>Trusted tour packages, cab booking, and hotel assistance from Ayodhya, Uttar Pradesh.</p>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/ayodhyaramnagari" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+                    <a href="https://www.youtube.com/@AR_Tourism" target="_blank" rel="noopener" aria-label="YouTube">YouTube</a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <a href="tour-packages.html">Tour Packages</a>
+                <a href="cab.html">Cab Tariff</a>
+                <a href="hotels.html">Hotels</a>
+                <a href="booking.html">Book & Pay</a>
+                <a href="destinations.html">Destinations</a>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <a href="tel:+917607745628">+91 7607745628</a>
+                <a href="mailto:ayodhyaramnagritourism@gmail.com">ayodhyaramnagritourism@gmail.com</a>
+                <a href="https://wa.me/917607745628" target="_blank" rel="noopener">WhatsApp Chat</a>
+                <span>Ayodhya, Uttar Pradesh, India</span>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; <span id="currentYear"></span> Ramnagari Tourism. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop" type="button" aria-label="Scroll to top" hidden>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <div class="floating-contact">
+        <a href="tel:+917607745628" class="floating-btn call-float" aria-label="Call Ramnagari Tourism">Call</a>
+        <a href="https://wa.me/917607745628" class="floating-btn whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp Ramnagari Tourism">WhatsApp</a>
+    </div>
+
+    <!-- UI Synchronization Engine mapping native select dropdown values dynamically to visual UI Cards -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // UI Assets and Metadata falling back to standard, professional high-res pictures
+            const imagesMap = {
+                destinations: {
+                    default: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80",
+                    ayodhya: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80",
+                    hanuman: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=600&q=80"
+                },
+                hotels: {
+                    budget: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80",
+                    "2 star": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=600&q=80",
+                    "3 star": "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=600&q=80",
+                    "4 star": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=600&q=80",
+                    default: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80"
+                },
+                cabs: {
+                    sedan: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80",
+                    suv: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80",
+                    traveler: "https://images.unsplash.com/photo-1532581291347-9c39cf10a73c?auto=format&fit=crop&w=600&q=80",
+                    default: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80"
+                }
+            };
+
+            const descriptionsMap = {
+                destinations: "Experience deep heritage routes, scenic river views, and standard holy temples.",
+                hotels: "Includes complete modern amenities, room service, clean bathrooms, and complimentary parking.",
+                cabs: "Private air-conditioned transfers with standard professional drivers."
+            };
+
+            // Mapping DOM targets
+            const selects = {
+                dest: document.getElementById("destinationSelect"),
+                hotel: document.getElementById("hotelCategorySelect"),
+                cab: document.getElementById("cabTypeSelect")
+            };
+
+            const containers = {
+                dest: document.getElementById("uiDestinationsContainer"),
+                hotel: document.getElementById("uiHotelsContainer"),
+                cab: document.getElementById("uiCabsContainer")
+            };
+
+            // Utility to extract images
+            function getAssetImg(type, textValue) {
+                const search = String(textValue).toLowerCase();
+                for (const key in imagesMap[type]) {
+                    if (search.includes(key)) return imagesMap[type][key];
+                }
+                return imagesMap[type].default;
+            }
+
+            // Sync visual showcase preview panel cards
+            function syncPreviews() {
+                const destText = selects.dest.options[selects.dest.selectedIndex]?.text || "Selected Destination";
+                const hotelText = selects.hotel.options[selects.hotel.selectedIndex]?.text || "Selected Hotel Tier";
+                const cabText = selects.cab.options[selects.cab.selectedIndex]?.text || "Selected Cab Class";
+
+                // Update Destination showcase
+                document.getElementById("showcaseDestTitle").innerText = destText;
+                document.getElementById("showcaseDestImg").src = getAssetImg("destinations", destText);
+
+                // Update Hotel showcase
+                document.getElementById("showcaseHotelTitle").innerText = hotelText + " Package";
+                document.getElementById("showcaseHotelImg").src = getAssetImg("hotels", hotelText);
+
+                // Update Cab showcase
+                document.getElementById("showcaseCabTitle").innerText = cabText;
+                document.getElementById("showcaseCabImg").src = getAssetImg("cabs", cabText);
+            }
+
+            // Generate responsive interactive visual cards based on native <select> options
+            function generateUIForSelect(selectKey, container) {
+                const selectEl = selects[selectKey];
+                if (!selectEl) return;
+                
+                container.innerHTML = "";
+                const options = Array.from(selectEl.options);
+
+                if (options.length === 0 || (options.length === 1 && !options[0].value)) {
+                    // Placeholder card if empty or loading
+                    container.innerHTML = `
+                        <div class="interactive-card" style="grid-column: 1/-1; padding: 20px; text-align: center; color: #94A3B8;">
+                            Loading options dynamically...
+                        </div>`;
+                    return;
+                }
+
+                options.forEach((opt) => {
+                    // Skip empty options
+                    if (!opt.value && opt.text.toLowerCase().includes("choose")) return;
+
+                    const isSelected = selectEl.value === opt.value;
+                    const card = document.createElement("div");
+                    card.className = `interactive-card ${isSelected ? 'is-selected' : ''}`;
+                    card.setAttribute("data-value", opt.value);
+
+                    const imgUrl = getAssetImg(selectKey === "dest" ? "destinations" : (selectKey === "hotel" ? "hotels" : "cabs"), opt.text);
+
+                    card.innerHTML = `
+                        <img src="${imgUrl}" class="interactive-card-img" alt="${opt.text}">
+                        <div class="interactive-card-info">
+                            <h4 class="interactive-card-title">${opt.text}</h4>
+                            <p class="interactive-card-subtitle">Verified Option</p>
+                        </div>
+                    `;
+
+                    card.addEventListener("click", () => {
+                        selectEl.value = opt.value;
+                        // Dispatch native standard events so booking.js recalculates prices
+                        selectEl.dispatchEvent(new Event("change", { bubbles: true }));
+                        
+                        // Update visual states
+                        Array.from(container.children).forEach(c => c.classList.remove("is-selected"));
+                        card.classList.add("is-selected");
+
+                        syncPreviews();
+                    });
+
+                    container.appendChild(card);
+                });
+            }
+
+            function syncAll() {
+                generateUIForSelect("dest", containers.dest);
+                generateUIForSelect("hotel", containers.hotel);
+                generateUIForSelect("cab", containers.cab);
+                syncPreviews();
+            }
+
+            // Monitor native selects for changes (e.g., if booking.js updates options dynamically)
+            const observer = new MutationObserver(() => {
+                syncAll();
+            });
+
+            Object.values(selects).forEach(selectEl => {
+                if (selectEl) {
+                    observer.observe(selectEl, { childList: true });
+                    selectEl.addEventListener("change", syncPreviews);
+                }
+            });
+
+            // Initial delay to let booking.js fetch configuration data
+            setTimeout(syncAll, 1000);
+        });
+    </script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/booking.js"></script>
+</body>
+</html>

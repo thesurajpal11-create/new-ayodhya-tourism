@@ -1,0 +1,91 @@
+ <!-- chatbot.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/chatbot.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<body>
+<div id="ramnagri-chatbot-root">
+  
+  <!-- Floating Chat Button Trigger -->
+  <button id="chatbot-trigger" aria-label="Open Travel Assistant">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+      <path d="M11 11h2v2h-2zm-4 0h2v2H7zm8 0h2v2h-2z" opacity=".8"/>
+    </svg>
+  </button>
+
+  <!-- Main Chat Window container -->
+  <div id="chatbot-window">
+    
+    <!-- Top Header bar -->
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <div class="chat-avatar-container">
+          <div class="chat-avatar">
+            <!-- Travel Agent Bot Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/>
+            </svg>
+          </div>
+          <span class="status-dot"></span>
+        </div>
+        <div class="chat-header-title">
+          <h4>Ramnagri Assistant</h4>
+          <span>Online • Guides you instantly</span>
+        </div>
+      </div>
+      
+      <div class="chat-header-actions">
+        <!-- Clear History Action Button -->
+        <button id="chatbot-clear" class="chat-header-btn" title="Clear Conversation">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+            <path fill="currentColor" d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"/>
+          </svg>
+        </button>
+        <!-- Minimize Action Button -->
+        <button id="chatbot-close" class="chat-header-btn" title="Minimize Chat">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+            <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Scrolling Message Area -->
+    <div id="chat-messages" class="chat-messages">
+      <!-- Chat bubbles are appended dynamically here -->
+    </div>
+
+    <!-- Quick Action Horizontal Buttons Row -->
+    <div id="quick-actions" class="quick-actions">
+      <button class="quick-btn" data-action="Suggest some good luxury and budget hotels in Ayodhya">🏨 Book Hotel</button>
+      <button class="quick-btn" data-action="Tell me about tourist cabs, local sightseeing prices and airport pickups">🚖 Book Cab</button>
+      <button class="quick-btn" data-action="What are your tour packages for Ayodhya?">💰 Tour Packages</button>
+      <button class="quick-btn" data-action="List the major historical tourist places to visit in Ayodhya">🛕 Tourist Places</button>
+      <button class="quick-btn" data-action="Show me details of nearby excursions around Ayodhya">📍 Near Attractions</button>
+      <button class="quick-btn" data-action="Provide support contacts, phone, and office addresses">📞 Support</button>
+    </div>
+
+    <!-- Bottom Input Area -->
+    <div class="chat-footer">
+      <input type="text" id="chat-input" class="chat-input" placeholder="Type in Hindi or English..." autocomplete="off">
+      <button id="chat-send" class="chat-send-btn" aria-label="Send Message">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<script src="../js/config.js"></script>
+<script src="../js/chatbot.js"></script>
+</body>
+</html>
