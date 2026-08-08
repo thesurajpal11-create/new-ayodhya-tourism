@@ -99,7 +99,7 @@ button:disabled {
 
 .travel-hero {
     padding: 7rem 0 4rem;
-    background: url("../images/ayodhya.jpg") center/cover no-repeat;
+    background: url("ayodhya.jpg") center/cover no-repeat;
     color: #fff;
 }
 
