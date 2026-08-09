@@ -32,7 +32,7 @@ pip install -r requirements.txt
    ```
 
 3. **Update Database Credentials**
-   - Edit `backend/database.py`
+   - Edit `database.py`
    - Replace your_password with your MySQL password
    ```python
    DATABASE_URL = "mysql+mysqlconnector://root:your_password@localhost:3306/ayodhya_tourism"

@@ -1,4 +1,4 @@
-/* =========================
+﻿/* =========================
    Base
 ========================= */
 :root {
@@ -931,7 +931,7 @@ button:disabled {
 .hotel-banner {
     background:
         linear-gradient(135deg, rgba(12, 75, 128, 0.9), rgba(24, 117, 198, 0.82)),
-        url("../images/ayodhya.jpg") center/cover no-repeat;
+        url("../ayodhya.jpg") center/cover no-repeat;
 }
 
 .hotel-browser-section {
@@ -1298,7 +1298,7 @@ button:disabled {
 .booking-banner {
     background:
         linear-gradient(135deg, rgba(18, 51, 86, 0.94), rgba(24, 117, 198, 0.86)),
-        url("../images/ayodhya.jpg") center/cover no-repeat;
+        url("../ayodhya.jpg") center/cover no-repeat;
 }
 
 .booking-shell {
@@ -1749,7 +1749,7 @@ button:disabled {
 .cab-banner {
     background:
         linear-gradient(135deg, rgba(12, 42, 74, 0.78), rgba(24, 117, 198, 0.72)),
-        url("../images/ayodhya.jpg") center/cover no-repeat;
+        url("../ayodhya.jpg") center/cover no-repeat;
 }
 
 .cab-fare-section {
@@ -3728,3 +3728,5 @@ button:disabled {
         transition: none;
     }
 }
+
+

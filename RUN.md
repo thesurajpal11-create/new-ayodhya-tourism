@@ -116,7 +116,7 @@ Open: **http://localhost:5500**
    EXIT;
    ```
 
-3. Update credentials in `backend/database.py`
+3. Update credentials in `database.py`
    ```python
    DATABASE_URL = "mysql+mysqlconnector://root:your_password@localhost:3306/ayodhya_tourism"
    ```

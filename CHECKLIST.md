@@ -16,34 +16,34 @@
 
 ### 🔴 Backend (11 files)
 **Main Files:**
-- ✅ backend/main.py - FastAPI application (complete with routes)
-- ✅ backend/database.py - Database connection
-- ✅ backend/requirements.txt - Python dependencies
-- ✅ backend/seed_data.py - Sample data script
+- ✅ main.py - FastAPI application (complete with routes)
+- ✅ database.py - Database connection
+- ✅ requirements.txt - Python dependencies
+- ✅ seed_data.py - Sample data script
 
 **Models (4 files):**
-- ✅ backend/app/models/__init__.py
-- ✅ backend/app/models/user.py - User model
-- ✅ backend/app/models/destination.py - Destination model
-- ✅ backend/app/models/booking.py - Booking model
-- ✅ backend/app/models/service.py - Service model
+- ✅ app/models/__init__.py
+- ✅ app/models/user.py - User model
+- ✅ app/models/destination.py - Destination model
+- ✅ app/models/booking.py - Booking model
+- ✅ app/models/service.py - Service model
 
 **Schemas (5 files):**
-- ✅ backend/app/schemas/__init__.py
-- ✅ backend/app/schemas/user.py - User validation
-- ✅ backend/app/schemas/destination.py - Destination validation
-- ✅ backend/app/schemas/booking.py - Booking validation
-- ✅ backend/app/schemas/service.py - Service validation
+- ✅ app/schemas/__init__.py
+- ✅ app/schemas/user.py - User validation
+- ✅ app/schemas/destination.py - Destination validation
+- ✅ app/schemas/booking.py - Booking validation
+- ✅ app/schemas/service.py - Service validation
 
 **Routes (5 files - integrated in main.py):**
-- ✅ backend/app/routes/__init__.py
-- ✅ backend/app/routes/auth.py - (integrated in main.py)
-- ✅ backend/app/routes/destinations.py - (integrated in main.py)
-- ✅ backend/app/routes/bookings.py - (integrated in main.py)
-- ✅ backend/app/routes/admin.py - (integrated in main.py)
+- ✅ app/routes/__init__.py
+- ✅ app/routes/auth.py - (integrated in main.py)
+- ✅ app/routes/destinations.py - (integrated in main.py)
+- ✅ app/routes/bookings.py - (integrated in main.py)
+- ✅ app/routes/admin.py - (integrated in main.py)
 
 **App:**
-- ✅ backend/app/__init__.py
+- ✅ app/__init__.py
 
 ### 🟦 Frontend HTML (8 files)
 - ✅ frontend/index.html - Homepage
