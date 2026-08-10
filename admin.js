@@ -1,4 +1,4 @@
-﻿const API_BASE_URL = window.RAMNAGARI_API_BASE_URL || "http://127.0.0.1:8000";
+const API_BASE_URL = window.RAMNAGARI_API_BASE_URL || "http://127.0.0.1:8000";
 const adminLoginForm = document.getElementById("adminLoginForm");
 const adminPanel = document.getElementById("adminPanel") || document.createElement("div");
 const adminStatus = document.getElementById("adminStatus") || document.getElementById("adminLoginMessage");
@@ -179,5 +179,3 @@ if (adminToken) {
     setStatus("Admin session restored.");
     loadPartnerData().catch(() => setStatus("Unable to load partner data.", "error"));
 }
-
-

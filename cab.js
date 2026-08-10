@@ -1,4 +1,4 @@
-﻿const WHATSAPP_NUMBER = "917607745628";
+const WHATSAPP_NUMBER = "917607745628";
 
 const CAB_LOCATIONS = [
     { id: "ayodhya", label: "Ayodhya" },
@@ -81,6 +81,9 @@ const destinationSelect = document.getElementById("cabDestination");
 const tripTypeSelect = document.getElementById("cabTripType");
 const pickupDateInput = document.getElementById("cabPickupDate");
 const swapRouteButton = document.getElementById("swapRoute");
+const estimateButton = document.getElementById("cabEstimateButton");
+const estimateSummary = document.getElementById("cabEstimateSummary");
+const estimateText = document.getElementById("cabEstimateText");
 const rateResults = document.getElementById("cabRateResults");
 const routeSummary = document.getElementById("cabRouteSummary");
 const ratePlaceholder = document.getElementById("cabRatePlaceholder");
@@ -119,23 +122,39 @@ function escapeHtml(value) {
     }[character]));
 }
 
+function getLocationId(value) {
+    const normalized = String(value ?? "").trim().toLowerCase();
+    if (!normalized) {
+        return "";
+    }
+
+    const exactMatch = CAB_LOCATIONS.find(
+        (location) => location.id.toLowerCase() === normalized || location.label.toLowerCase() === normalized
+    );
+
+    return exactMatch?.id || "";
+}
+
 function getLocationLabel(locationId) {
     return CAB_LOCATIONS.find((location) => location.id === locationId)?.label || locationId;
 }
 
 function populateLocationSelects() {
-    const options = CAB_LOCATIONS.map(
-        (location) => `<option value="${location.id}">${escapeHtml(location.label)}</option>`
+    const locationOptions = CAB_LOCATIONS.map(
+        (location) => `<option value="${escapeHtml(location.label)}"></option>`
     ).join("");
 
+    const dataList = document.getElementById("cabLocationList");
+    if (dataList) {
+        dataList.innerHTML = locationOptions;
+    }
+
     if (sourceSelect) {
-        sourceSelect.innerHTML = `<option value="">Select pickup place</option>${options}`;
-        sourceSelect.value = "ayodhya";
+        sourceSelect.value = "Ayodhya";
     }
 
     if (destinationSelect) {
-        destinationSelect.innerHTML = `<option value="">Select destination</option>${options}`;
-        destinationSelect.value = "varanasi";
+        destinationSelect.value = "Varanasi";
     }
 }
 
@@ -197,8 +216,10 @@ function buildWhatsAppLink({ sourceId, destinationId, tripType, vehicleName, far
 }
 
 function renderRates() {
-    const sourceId = sourceSelect?.value;
-    const destinationId = destinationSelect?.value;
+    const sourceValue = sourceSelect?.value;
+    const destinationValue = destinationSelect?.value;
+    const sourceId = getLocationId(sourceValue);
+    const destinationId = getLocationId(destinationValue);
     const tripType = tripTypeSelect?.value || "one-way";
 
     if (!sourceId || !destinationId || !rateResults) {
@@ -268,14 +289,6 @@ function renderRates() {
 }
 
 function handleRouteChange() {
-    const sourceId = sourceSelect?.value;
-    const destinationId = destinationSelect?.value;
-
-    if (sourceId && destinationId) {
-        renderRates();
-        return;
-    }
-
     if (rateResults) {
         rateResults.hidden = true;
         rateResults.innerHTML = "";
@@ -288,6 +301,44 @@ function handleRouteChange() {
     if (ratePlaceholder) {
         ratePlaceholder.hidden = false;
     }
+
+    if (estimateSummary) {
+        estimateSummary.hidden = true;
+    }
+}
+
+function showEstimate() {
+    const sourceValue = sourceSelect?.value;
+    const destinationValue = destinationSelect?.value;
+    const sourceId = getLocationId(sourceValue);
+    const destinationId = getLocationId(destinationValue);
+    const tripType = tripTypeSelect?.value || "one-way";
+
+    if (!sourceId || !destinationId) {
+        if (estimateSummary) {
+            estimateText.textContent = "Please choose valid source and destination from the list.";
+            estimateSummary.hidden = false;
+        }
+        return;
+    }
+
+    const routeInfo = getRouteInfo(sourceId, destinationId);
+    const tripLabel = sourceId === destinationId || tripType === "local"
+        ? "Local Full Day"
+        : tripType === "round"
+            ? "Round Trip"
+            : "One Way";
+
+    if (estimateSummary) {
+        estimateText.innerHTML = `Estimated route from <strong>${escapeHtml(getLocationLabel(sourceId))}</strong> to <strong>${escapeHtml(getLocationLabel(destinationId))}</strong> for <strong>${escapeHtml(tripLabel)}</strong>. Approx. distance: <strong>${routeInfo.km} km</strong>. Duration: <strong>${escapeHtml(routeInfo.duration)}</strong>.`;
+        estimateSummary.hidden = false;
+    }
+
+    if (ratePlaceholder) {
+        ratePlaceholder.hidden = true;
+    }
+
+    renderRates();
 }
 
 if (swapRouteButton) {
@@ -299,6 +350,10 @@ if (swapRouteButton) {
     });
 }
 
+if (estimateButton) {
+    estimateButton.addEventListener("click", showEstimate);
+}
+
 [sourceSelect, destinationSelect, tripTypeSelect, pickupDateInput].forEach((element) => {
     element?.addEventListener("change", handleRouteChange);
 });
@@ -306,5 +361,3 @@ if (swapRouteButton) {
 populateLocationSelects();
 setMinPickupDate();
 handleRouteChange();
-
-

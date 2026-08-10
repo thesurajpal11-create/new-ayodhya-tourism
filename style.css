@@ -1,4 +1,4 @@
-﻿/* =========================
+/* =========================
    Base
 ========================= */
 :root {
@@ -921,17 +921,105 @@ button:disabled {
     padding-left: 1.2rem;
 }
 
-.page-cta-row {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-top: 1.2rem;
+.kia-card,
+.sedan-card,
+.suv-card,
+.innova-card,
+.tempo-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 320px;
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+}
+
+.sedan-card {
+    background-image: url("sedan.jpeg");
+}
+
+.kia-card {
+    background-image: url("kia.jpeg");
+}
+
+.suv-card {
+    background-image: url("suv.jpeg");
+}
+
+.innova-card {
+    background-image: url("innova.jpg");
+}
+
+.tempo-card {
+    background-image: url("tempo traveller.jpg");
+}
+
+.kia-card::before,
+.sedan-card::before,
+.suv-card::before,
+.innova-card::before,
+.tempo-card::before,
+.card-overlay {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(8, 20, 39, 0.45), rgba(8, 20, 39, 0.6));
+    pointer-events: none;
+}
+
+.kia-card-content,
+.card-content {
+    position: relative;
+    z-index: 1;
+}
+
+.kia-card h2,
+.sedan-card h2,
+.suv-card h2,
+.innova-card h2,
+.tempo-card h2,
+.kia-card p,
+.sedan-card p,
+.suv-card p,
+.innova-card p,
+.tempo-card p,
+.kia-card li,
+.sedan-card li,
+.suv-card li,
+.innova-card li,
+.tempo-card li {
+    color: #fff;
+}
+
+.kia-card p,
+.sedan-card p,
+.suv-card p,
+.innova-card p,
+.tempo-card p {
+    color: rgba(255,255,255,0.92);
+}
+
+.kia-card ul,
+.sedan-card ul,
+.suv-card ul,
+.innova-card ul,
+.tempo-card ul {
+    padding-left: 1.2rem;
+}
+
+.kia-card li,
+.sedan-card li,
+.suv-card li,
+.innova-card li,
+.tempo-card li {
+    margin-bottom: 0.45rem;
+    font-weight: 600;
 }
 
 .hotel-banner {
     background:
         linear-gradient(135deg, rgba(12, 75, 128, 0.9), rgba(24, 117, 198, 0.82)),
-        url("../ayodhya.jpg") center/cover no-repeat;
+        url("../images/ayodhya.jpg") center/cover no-repeat;
 }
 
 .hotel-browser-section {
@@ -1298,7 +1386,7 @@ button:disabled {
 .booking-banner {
     background:
         linear-gradient(135deg, rgba(18, 51, 86, 0.94), rgba(24, 117, 198, 0.86)),
-        url("../ayodhya.jpg") center/cover no-repeat;
+        url("../images/ayodhya.jpg") center/cover no-repeat;
 }
 
 .booking-shell {
@@ -1749,7 +1837,7 @@ button:disabled {
 .cab-banner {
     background:
         linear-gradient(135deg, rgba(12, 42, 74, 0.78), rgba(24, 117, 198, 0.72)),
-        url("../ayodhya.jpg") center/cover no-repeat;
+        url("cars.jpg") center/cover no-repeat;
 }
 
 .cab-fare-section {
@@ -1849,6 +1937,61 @@ button:disabled {
     border: 1px solid rgba(24, 117, 198, 0.12);
 }
 
+.cab-action-row {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.cab-custom-trip-card {
+    margin-top: 1rem;
+    padding: 1rem 1.15rem;
+    border-radius: var(--radius-md);
+    background: #f8fbff;
+    border: 1px solid rgba(24, 117, 198, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.cab-custom-trip-card p {
+    margin: 0;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.cab-custom-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(34, 197, 94, 0.12);
+    color: #166534;
+    font-size: 0.94rem;
+    margin-left: 0.5rem;
+}
+
+.cab-estimate-summary {
+    margin-top: 1rem;
+    padding: 1.25rem;
+    border-radius: var(--radius-lg);
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+}
+
+.cab-estimate-summary h3 {
+    margin: 0 0 0.65rem;
+    color: var(--primary-dark);
+}
+
+.cab-estimate-summary p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.75;
+}
+
 .cab-team-banner h3 {
     margin: 0 0 0.35rem;
     color: var(--primary-dark);
@@ -1865,6 +2008,116 @@ button:disabled {
 .cab-results-panel {
     display: grid;
     gap: 1rem;
+}
+
+.popular-places-section {
+    padding-top: 2rem;
+}
+
+.popular-places-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.popular-place-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+    background: linear-gradient(135deg, rgba(24, 117, 198, 0.12), rgba(255, 255, 255, 0.9));
+    color: var(--primary-dark);
+    text-align: center;
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+}
+
+.popular-place-card h3 {
+    margin: 0;
+    font-size: 1.15rem;
+}
+
+.why-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: 1.5rem;
+}
+
+.feature-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1.2rem;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(237,243,255,0.95));
+    border: 1px solid rgba(24,117,198,0.14);
+    text-align: center;
+}
+
+.feature-icon {
+    font-size: 1.8rem;
+}
+
+.feature-card h3 {
+    margin: 0;
+    color: var(--primary-dark);
+    font-size: 1rem;
+}
+
+.bottom-cta-card {
+    margin-top: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.4rem 1.5rem;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, rgba(24,117,198,0.08), rgba(212,175,55,0.12));
+}
+
+.bottom-cta-card .small-heading {
+    margin: 0 0 0.35rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.bottom-cta-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    color: var(--primary-dark);
+}
+
+@media (max-width: 980px) {
+    .popular-places-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .why-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .bottom-cta-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 720px) {
+    .popular-places-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .why-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .popular-places-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .cab-route-summary {
@@ -3728,5 +3981,3 @@ button:disabled {
         transition: none;
     }
 }
-
-

@@ -1,4 +1,4 @@
-﻿// config.js
+// config.js
 const ChatbotConfig = {
   // Replace with your actual Gemini API Key
   // To get a key, visit: https://aistudio.google.com/
@@ -34,4 +34,3 @@ Rules:
     unknown: "I understand you are planning your visit to Ayodhya. To give you the most accurate help regarding that, could you please specify if you're looking for hotels, travel cabs, historic places, or custom tour packages?"
   }
 };
-

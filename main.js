@@ -1,4 +1,4 @@
-﻿const navToggle = document.getElementById("navToggle");
+const navToggle = document.getElementById("navToggle");
 const navMenu = document.getElementById("navMenu");
 const topSlider = document.querySelector(".top-slider");
 const topSlides = document.querySelectorAll(".top-slide");
@@ -733,7 +733,7 @@ const ayodhyaSmartLocations = [
         type: "temples",
         lat: 26.7922,
         lng: 82.1998,
-        image: "ayodhya.jpg",
+        image: "images/ayodhya.jpg",
         description: "The spiritual epicenter of Ayodhya, known for divine aura, sacred architecture, and premium pilgrimage experiences.",
         hours: "Open 24 hours",
         tips: "Visit early morning for calmer darshan and better photography light.",
@@ -746,7 +746,7 @@ const ayodhyaSmartLocations = [
         type: "temples",
         lat: 26.7946,
         lng: 82.1976,
-        image: "ayodhya.jpg",
+        image: "images/ayodhya.jpg",
         description: "A revered hilltop shrine offering expansive views and a peaceful devotional setting.",
         hours: "5:30 AM – 10:30 PM",
         tips: "Best for sunrise visits and a quieter spiritual moment.",
@@ -759,7 +759,7 @@ const ayodhyaSmartLocations = [
         type: "temples",
         lat: 26.7907,
         lng: 82.2007,
-        image: "ayodhya.jpg",
+        image: "images/ayodhya.jpg",
         description: "A grand temple complex with elegant architecture and serene ambience for visitors.",
         hours: "6:00 AM – 9:00 PM",
         tips: "Ideal for a relaxed half-day visit between morning and evening darshan.",
@@ -772,7 +772,7 @@ const ayodhyaSmartLocations = [
         type: "temples",
         lat: 26.7861,
         lng: 82.2052,
-        image: "varanasi.jpg",
+        image: "images/varanasi.jpg",
         description: "A sacred temple visit linked to rich local heritage and spiritual narratives.",
         hours: "6:00 AM – 8:00 PM",
         tips: "Pair it with a nearby food stop or a calm riverside walk.",
@@ -785,7 +785,7 @@ const ayodhyaSmartLocations = [
         type: "ghats",
         lat: 26.7887,
         lng: 82.1992,
-        image: "chitrakoot.jpg",
+        image: "images/chitrakoot.jpg",
         description: "A majestic riverfront destination known for evening lights, rituals, and timeless views.",
         hours: "Open 24 hours",
         tips: "The evening glow is especially beautiful for photography and reflection.",
@@ -798,7 +798,7 @@ const ayodhyaSmartLocations = [
         type: "ghats",
         lat: 26.7869,
         lng: 82.1927,
-        image: "chitrakoot.jpg",
+        image: "images/chitrakoot.jpg",
         description: "A riverside experience perfect for aarti, sunset views, and spiritual calm.",
         hours: "Open 24 hours",
         tips: "Visit just before sunset for the best ambience and crowd balance.",
@@ -811,7 +811,7 @@ const ayodhyaSmartLocations = [
         type: "transport",
         lat: 26.7985,
         lng: 82.1918,
-        image: "ayodhya.jpg",
+        image: "images/ayodhya.jpg",
         description: "Easy rail access for visitors arriving from across India.",
         hours: "Open 24 hours",
         tips: "Ideal for smooth city pickups and onward transfers.",
@@ -824,7 +824,7 @@ const ayodhyaSmartLocations = [
         type: "transport",
         lat: 26.7606,
         lng: 82.1963,
-        image: "varanasi.jpg",
+        image: "images/varanasi.jpg",
         description: "Convenient air access for domestic arrivals and premium travel planning.",
         hours: "Open 24 hours",
         tips: "Best for guests arriving by air and needing a quick transfer.",
@@ -837,7 +837,7 @@ const ayodhyaSmartLocations = [
         type: "transport",
         lat: 26.7954,
         lng: 82.2025,
-        image: "ayodhya.jpg",
+        image: "images/ayodhya.jpg",
         description: "A practical intercity transport hub for pilgrims and families.",
         hours: "5:00 AM – 10:00 PM",
         tips: "Useful for regional routes and shortest onward travel connections.",
@@ -850,7 +850,7 @@ const ayodhyaSmartLocations = [
         type: "hotels",
         lat: 26.7918,
         lng: 82.2038,
-        image: "ayodhya.jpg",
+        image: "images/ayodhya.jpg",
         description: "Comfort-first stay points with premium amenities and easy temple access.",
         hours: "Open 24 hours",
         tips: "Great for full-day temple visits and nearby pickup convenience.",
@@ -863,7 +863,7 @@ const ayodhyaSmartLocations = [
         type: "hotels",
         lat: 26.7892,
         lng: 82.1951,
-        image: "ayodhya.jpg",
+        image: "images/ayodhya.jpg",
         description: "Elegant stay options close to major routes and local transport.",
         hours: "Open 24 hours",
         tips: "Choose this for quieter surroundings and convenient city access.",
@@ -876,7 +876,7 @@ const ayodhyaSmartLocations = [
         type: "restaurants",
         lat: 26.7906,
         lng: 82.2014,
-        image: "chitrakoot.jpg",
+        image: "images/chitrakoot.jpg",
         description: "A convenient dining stop for wholesome meals and quick refreshment breaks.",
         hours: "7:00 AM – 11:00 PM",
         tips: "Perfect for a relaxed pause between temple visits.",
@@ -889,7 +889,7 @@ const ayodhyaSmartLocations = [
         type: "parking",
         lat: 26.7928,
         lng: 82.1972,
-        image: "ayodhya.jpg",
+        image: "images/ayodhya.jpg",
         description: "Secure parking availability near major visitor routes.",
         hours: "Open 24 hours",
         tips: "Useful for family vehicles and longer sightseeing trips.",
@@ -902,7 +902,7 @@ const ayodhyaSmartLocations = [
         type: "hospitals",
         lat: 26.7951,
         lng: 82.2058,
-        image: "ayodhya.jpg",
+        image: "images/ayodhya.jpg",
         description: "Accessible medical support for travelers and pilgrims.",
         hours: "24/7",
         tips: "Useful for urgent needs while exploring the city.",
@@ -915,7 +915,7 @@ const ayodhyaSmartLocations = [
         type: "shopping",
         lat: 26.7941,
         lng: 82.2011,
-        image: "varanasi.jpg",
+        image: "images/varanasi.jpg",
         description: "Quick cash access near major travel corridors.",
         hours: "Open 24 hours",
         tips: "Helpful before moving between sightseeing spots.",
@@ -928,7 +928,7 @@ const ayodhyaSmartLocations = [
         type: "emergency",
         lat: 26.7898,
         lng: 82.2033,
-        image: "ayodhya.jpg",
+        image: "images/ayodhya.jpg",
         description: "Emergency support point for visitor assistance and safety guidance.",
         hours: "24/7",
         tips: "A reliable contact point for assistance during busy travel days.",
@@ -941,7 +941,7 @@ const ayodhyaSmartLocations = [
         type: "transport",
         lat: 26.7883,
         lng: 82.2035,
-        image: "chitrakoot.jpg",
+        image: "images/chitrakoot.jpg",
         description: "Convenient pickup area for local transfers and temple hops.",
         hours: "Open 24 hours",
         tips: "Use when you want a direct ride without waiting for public transport.",
@@ -1036,8 +1036,8 @@ function buildInfoWindowContent(location, distance, travelTime) {
     const walkingUrl = `https://www.google.com/maps/dir/?api=1&origin=Current+Location&destination=${location.lat},${location.lng}&travelmode=walking`;
     const drivingUrl = `https://www.google.com/maps/dir/?api=1&origin=Current+Location&destination=${location.lat},${location.lng}&travelmode=driving`;
     const hotelCta = location.type === "hotels"
-        ? `<a class="map-action-btn" href="booking.html">Book Now</a>`
-        : `<a class="map-action-btn" href="hotels.html">Book Nearby Hotel</a>`;
+        ? `<a class="map-action-btn" href="pages/booking.html">Book Now</a>`
+        : `<a class="map-action-btn" href="pages/hotels.html">Book Nearby Hotel</a>`;
 
     return `
         <div style="max-width: 330px; font-family: 'Manrope', sans-serif;">
@@ -1307,5 +1307,3 @@ if (smartMapContainer) {
 }
 
 window.initAyodhyaSmartMap = initializeSmartMap;
-
-

@@ -1,4 +1,4 @@
-﻿const MEDIA_API_BASE_URL = window.RAMNAGARI_API_BASE_URL || "http://127.0.0.1:8000";
+const MEDIA_API_BASE_URL = window.RAMNAGARI_API_BASE_URL || "http://127.0.0.1:8000";
 
 function getDestinationSlug() {
     const parts = window.location.pathname.split("/").filter(Boolean);
@@ -74,13 +74,13 @@ const destinationSlug = getDestinationSlug();
 let savedMedia = [];
 
 async function loadSavedMedia() {
-    savedMedia = await mediaRequest(`/api/media/${destinationSlug}`);
+    savedMedia = await mediaRequest(`/api/media/destinations/${destinationSlug}`);
     renderSavedImages();
     renderSavedVideos();
 }
 
 async function deleteMedia(mediaId) {
-    await mediaRequest(`/api/media/${destinationSlug}/${mediaId}`, {
+    await mediaRequest(`/api/media/destinations/${destinationSlug}/${mediaId}`, {
         method: "DELETE",
     });
     await loadSavedMedia();
@@ -227,7 +227,7 @@ document.querySelectorAll("[data-gallery-upload]").forEach((galleryBlock) => {
         saveButton.disabled = true;
         setStatus(status, "Saving photos...");
         try {
-            await mediaRequest(`/api/media/${destinationSlug}/images`, {
+            await mediaRequest(`/api/media/destinations/${destinationSlug}/images`, {
                 method: "POST",
                 body: formData,
             });
@@ -321,7 +321,7 @@ document.querySelectorAll(".video-section-grid").forEach((videoBlock) => {
         saveVideoButton.disabled = true;
         setStatus(status, "Saving video...");
         try {
-            await mediaRequest(`/api/media/${destinationSlug}/video-file`, {
+            await mediaRequest(`/api/media/destinations/${destinationSlug}/video-file`, {
                 method: "POST",
                 body: formData,
             });
@@ -347,7 +347,7 @@ document.querySelectorAll(".video-section-grid").forEach((videoBlock) => {
         saveYoutubeButton.disabled = true;
         setStatus(status, "Saving YouTube link...");
         try {
-            await mediaRequest(`/api/media/${destinationSlug}/youtube`, {
+            await mediaRequest(`/api/media/destinations/${destinationSlug}/youtube`, {
                 method: "POST",
                 body: formData,
             });
@@ -370,5 +370,3 @@ loadSavedMedia().catch(() => {
         card.appendChild(status);
     });
 });
-
-

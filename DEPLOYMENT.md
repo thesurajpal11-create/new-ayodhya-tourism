@@ -84,7 +84,7 @@ Access the application at: http://localhost:5500
 
 3. **render.yaml Configuration**
    
-   Already configured in `render.yaml`:
+   Already configured in `backend/render.yaml`:
    - **Build Command:** `pip install -r requirements.txt`
    - **Start Command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`
    - **Runtime:** Python
@@ -134,7 +134,7 @@ mysql+pymysql://username:password@remote-host.com:3306/ayodhya_db
 ## Database Initialization
 
 ### Auto-Creation
-Tables are automatically created when the app starts due to this code in `main.py`:
+Tables are automatically created when the app starts due to this code in `backend/main.py`:
 
 ```python
 Base.metadata.create_all(bind=engine)
@@ -229,7 +229,7 @@ taskkill /PID <PID> /F
 ```
 tour/
 ├── .env                          # Environment variables (created)
-├── 
+├── backend/
 │   ├── main.py                   # FastAPI entry point
 │   ├── database.py               # Database configuration
 │   ├── requirements.txt          # Python dependencies

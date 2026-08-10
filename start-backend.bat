@@ -19,8 +19,8 @@ if %errorlevel% neq 0 (
 echo [Step 1] Checking Python...
 python --version
 
-REM Ensure working directory is repository root
-cd /d %~dp0
+REM Navigate to backend
+cd /d %~dp0backend
 
 echo.
 echo [Step 2] Checking Virtual Environment...
@@ -40,8 +40,8 @@ pip install -r requirements.txt >nul 2>&1
 echo.
 echo [Step 5] Loading Environment Configuration...
 REM Load .env file if it exists
-if exist ".\\.env" (
-    for /f "tokens=*" %%a in ('type ".\\.env" ^| findstr /v "^#" ^| findstr /v "^$"') do (
+if exist "..\\.env" (
+    for /f "tokens=*" %%a in ('type "..\\.env" ^| findstr /v "^#" ^| findstr /v "^$"') do (
         set "%%a"
     )
     echo Environment variables loaded from .env
@@ -62,7 +62,8 @@ echo    http://localhost:8000/docs
 echo.
 echo *** IMPORTANT: Keep this window open! ***
 echo.
-echo Open ANOTHER PowerShell window and run (serve frontend from project root):
+echo Open ANOTHER PowerShell window and run:
+echo    cd frontend
 echo    python -m http.server 5500
 echo.
 echo Then open in browser:

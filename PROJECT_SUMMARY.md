@@ -18,7 +18,7 @@ Your complete tourism website with **backend APIs** and **frontend interface** i
 
 ### 📁 Files Created
 ```
-
+backend/
 ├── main.py ........................ FastAPI application
 ├── database.py ................... MySQL connection
 ├── requirements.txt .............. Python dependencies
@@ -128,7 +128,7 @@ All with proper relationships, indexes, and constraints.
 # Create MySQL database
 CREATE DATABASE ayodhya_tourism;
 
-# Update credentials in database.py
+# Update credentials in backend/database.py
 ```
 
 ### Step 2: Start Backend

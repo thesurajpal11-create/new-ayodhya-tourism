@@ -1,4 +1,4 @@
-﻿const localGuidesList = document.getElementById("localGuidesList");
+const localGuidesList = document.getElementById("localGuidesList");
 const localGuideQuestionForm = document.getElementById("localGuideQuestionForm");
 const localGuideQuestion = document.getElementById("localGuideQuestion");
 const localGuideFeedback = document.getElementById("localGuideFeedback");
@@ -59,5 +59,3 @@ if (localGuideQuestionForm) {
 }
 
 loadOnlineLocalGuides();
-
-

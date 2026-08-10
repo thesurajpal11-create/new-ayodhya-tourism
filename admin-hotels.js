@@ -1,4 +1,4 @@
-﻿const ADMIN_API_BASE_URL = window.RAMNAGARI_API_BASE_URL || "http://127.0.0.1:8000";
+const ADMIN_API_BASE_URL = window.RAMNAGARI_API_BASE_URL || "http://127.0.0.1:8000";
 
 const state = {
     token: localStorage.getItem("ramnagari_admin_token") || "",
@@ -201,5 +201,3 @@ addHotelForm.addEventListener("submit", async (event) => {
 });
 
 hideAdminTools();
-
-

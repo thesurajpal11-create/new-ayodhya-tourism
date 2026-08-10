@@ -1,4 +1,4 @@
-﻿const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "http://127.0.0.1:8000";
 
 const destinationSelect = document.getElementById("hotelDestinationSelect");
 const categorySelect = document.getElementById("hotelCategorySelect");
@@ -13,15 +13,15 @@ const authStatus = document.getElementById("hotelAuthStatus");
 const authLogoutBtn = document.getElementById("hotelAuthLogoutBtn");
 
 const DESTINATION_IMAGES = {
-    ayodhya: "../ayodhya.jpg",
-    varanasi: "../varanasi.jpg",
-    chitrakoot: "../chitrakoot.jpg",
-    mathura: "../mathura.jpg",
-    gaya: "../gaya.jpg",
-    prayagraj: "../prayagraj.jpg",
-    vindhyachal: "../vindhyachal.jpg",
-    vrindavan: "../mathura.jpg",
-    kashi: "../varanasi.jpg",
+    ayodhya: "../images/ayodhya.jpg",
+    varanasi: "../images/varanasi.jpg",
+    chitrakoot: "../images/chitrakoot.jpg",
+    mathura: "../images/mathura.jpg",
+    gaya: "../images/gaya.jpg",
+    prayagraj: "../images/prayagraj.jpg",
+    vindhyachal: "../images/vindhyachal.jpg",
+    vrindavan: "../images/mathura.jpg",
+    kashi: "../images/varanasi.jpg",
 };
 
 const CATEGORY_SCORES = {
@@ -151,7 +151,7 @@ function escapeHtml(value) {
 
 function getDestinationImage(destinationName, index = 0) {
     const slug = String(destinationName || "").trim().toLowerCase();
-    const baseImage = DESTINATION_IMAGES[slug] || "../ayodhya.jpg";
+    const baseImage = DESTINATION_IMAGES[slug] || "../images/ayodhya.jpg";
     return baseImage;
 }
 
@@ -211,7 +211,7 @@ function hotelOptionTemplate(option, index) {
     return `
         <article class="hotel-listing-card">
             <div class="hotel-listing-image">
-                <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(option.display_name)}" loading="lazy" onerror="this.src='../ayodhya.jpg'">
+                <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(option.display_name)}" loading="lazy" onerror="this.src='../images/ayodhya.jpg'">
                 <button type="button" class="hotel-fav-btn" aria-label="Save to favourites">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="currentColor" stroke-width="1.5"/>
@@ -434,5 +434,3 @@ if (authLogoutBtn) {
 currentAuth = loadAuthSession();
 updateAuthUi();
 loadDestinations();
-
-

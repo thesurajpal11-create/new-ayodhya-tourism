@@ -1,4 +1,4 @@
-﻿const localGuidesAdminPanel = document.getElementById("localGuidesAdminPanel");
+const localGuidesAdminPanel = document.getElementById("localGuidesAdminPanel");
 const addLocalGuideForm = document.getElementById("addLocalGuideForm");
 const localGuidesAdminList = document.getElementById("localGuidesAdminList");
 const localGuideAdminMessage = document.getElementById("localGuideAdminMessage");
@@ -70,5 +70,3 @@ if (localGuidesAdminList) {
         } catch (error) { setGuideAdminMessage(error.message, "error"); }
     });
 }
-
-

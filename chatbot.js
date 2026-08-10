@@ -1,4 +1,4 @@
-﻿// chatbot.js
+// chatbot.js
 
 document.addEventListener("DOMContentLoaded", () => {
   // Select DOM Elements
@@ -224,4 +224,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-

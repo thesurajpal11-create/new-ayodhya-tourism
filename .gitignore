@@ -1,17 +1,26 @@
-# Python cache and artifacts
-__pycache__/
+# Python
 *.pyc
+__pycache__/
 *.pyo
 *.pyd
-# Virtual environment
+*.pyd
+*.env
+.env
+.env.*
+# Virtual environments
 venv/
 .env/
-# Local settings and data
-*.env
-*.db
+.venv/
+backend/venv/
+backend/.git/
+# Database files
 *.sqlite3
-# Editor files
+*.db
+backend/ayodhya_tourism.db
+# Editor and OS files
 .DS_Store
 Thumbs.db
-# Bytecode cache
+# Distribution
+build/
+dist/
 *.egg-info/

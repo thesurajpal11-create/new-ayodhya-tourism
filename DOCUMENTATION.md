@@ -13,7 +13,7 @@ tour/
 ├── setup.bat                # Setup script for Windows
 ├── setup.sh                 # Setup script for Linux/Mac
 │
-├──                  # FastAPI Backend
+├── backend/                 # FastAPI Backend
 │   ├── main.py             # FastAPI application entry point
 │   ├── database.py         # Database connection setup
 │   ├── requirements.txt     # Python dependencies

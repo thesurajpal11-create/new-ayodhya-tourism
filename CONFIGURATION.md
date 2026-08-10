@@ -27,7 +27,7 @@
 
 ### Configure Backend Connection
 
-File: `database.py`
+File: `backend/database.py`
 
 ```python
 # Change this line with your credentials:
@@ -48,7 +48,7 @@ DATABASE_URL = "mysql+mysqlconnector://root:mypassword@localhost:3306/ayodhya_to
 
 ### Backend Settings
 
-File: `main.py`
+File: `backend/main.py`
 
 ```python
 # Change host and port if needed
@@ -178,7 +178,7 @@ VALUES (
 
 ### For Production Deployment
 
-1. **Change Secret Key** (`main.py`)
+1. **Change Secret Key** (`backend/main.py`)
    ```python
    # Replace simple token with JWT
    from jose import JWTError, jwt
@@ -216,7 +216,7 @@ VALUES (
 
 To add email notifications:
 
-File: Create `email.py`
+File: Create `backend/email.py`
 
 ```python
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
@@ -252,7 +252,7 @@ async def send_confirmation_email(email: str, booking_id: int):
 4. Install: `pip install razorpay`
 
 ```python
-# payment.py
+# backend/payment.py
 import razorpay
 
 client = razorpay.Client(
@@ -272,7 +272,7 @@ def create_payment(amount, booking_id):
 
 ## Logging Configuration
 
-File: Create `logging_config.py`
+File: Create `backend/logging_config.py`
 
 ```python
 import logging
@@ -308,7 +308,7 @@ CREATE INDEX idx_destination_name ON destinations(name);
 
 ### API Rate Limiting
 
-Add to `main.py`:
+Add to `backend/main.py`:
 
 ```python
 from slowapi import Limiter

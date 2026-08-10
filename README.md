@@ -52,7 +52,7 @@ A complete tour and travel booking website for pilgrimage destinations in India 
 
 ```
 tour/
-├── 
+├── backend/
 │   ├── app/
 │   │   ├── models/
 │   │   │   ├── user.py
