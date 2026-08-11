@@ -1018,8 +1018,9 @@ button:disabled {
 
 .hotel-banner {
     background:
-        linear-gradient(135deg, rgba(12, 75, 128, 0.9), rgba(24, 117, 198, 0.82)),
-        url("../images/ayodhya.jpg") center/cover no-repeat;
+        linear-gradient(135deg, rgba(12, 75, 128, 0.88), rgba(24, 117, 198, 0.76)),
+        url("hotel.jpg") center/cover no-repeat;
+    background-blend-mode: overlay;
 }
 
 .hotel-browser-section {
