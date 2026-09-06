@@ -3067,6 +3067,196 @@ button:disabled {
     padding: 4.8rem 0;
 }
 
+.explore-ayodhya-section {
+    background: linear-gradient(180deg, #fffaf4 0%, #fff 100%);
+}
+
+.explore-ayodhya-heading {
+    max-width: 680px;
+    margin-bottom: 1.8rem;
+}
+
+.explore-ayodhya-heading p {
+    margin: 0.7rem 0 0;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.explore-city-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.2rem;
+}
+
+.explore-city-card {
+    min-width: 0;
+    border: 1px solid rgba(181, 110, 36, 0.16);
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+}
+
+.explore-city-card--ayodhya {
+    grid-column: 1 / -1;
+    padding: 1.25rem;
+}
+
+.explore-city-card-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 140px;
+    color: inherit;
+    text-decoration: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.explore-city-card-link:hover,
+.explore-city-card-link:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.explore-city-card-link:focus-visible {
+    outline: 3px solid rgba(24, 117, 198, 0.25);
+    outline-offset: 4px;
+}
+
+.explore-city-card--coming {
+    display: flex;
+    align-items: center;
+    min-height: 140px;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, #fff 0%, #fff7eb 100%);
+}
+
+.explore-city-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 1.1rem;
+}
+
+.explore-city-card-heading > span {
+    display: grid;
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border-radius: 14px;
+    background: var(--accent);
+    font-size: 1.45rem;
+}
+
+.explore-city-card-heading h3 {
+    margin: 0;
+    color: var(--primary-dark);
+    font-size: 1.2rem;
+}
+
+.explore-city-card-heading p {
+    margin: 0.25rem 0 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
+.explore-city-card--coming .explore-city-card-heading {
+    margin: 0;
+}
+
+.explore-city-card-cta {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.7rem 1rem;
+    border-radius: 9px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+
+.explore-ayodhya-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1.2rem;
+}
+
+.explore-place-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+    border: 1px solid rgba(181, 110, 36, 0.14);
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.explore-place-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.explore-place-card > img {
+    width: 100%;
+    height: 175px;
+    object-fit: cover;
+    background: #f4eadf;
+}
+
+.explore-place-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.explore-place-content h3,
+.explore-place-content h4 {
+    margin: 0;
+    color: var(--primary-dark);
+    font-size: 1.03rem;
+    line-height: 1.35;
+}
+
+.explore-place-content p {
+    margin: 0.65rem 0 1rem;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+.explore-place-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 100%;
+    margin-top: auto;
+    padding: 0.65rem 0.8rem;
+    border-radius: 9px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 800;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.explore-place-button:hover,
+.explore-place-button:focus-visible {
+    background: var(--primary-dark);
+    color: #fff;
+}
+
+.explore-place-button:focus-visible {
+    outline: 3px solid rgba(24, 117, 198, 0.25);
+    outline-offset: 3px;
+}
+
 .destination-overview {
     display: grid;
     grid-template-columns: 1.35fr 0.95fr;
@@ -3630,6 +3820,10 @@ button:disabled {
         grid-template-columns: 1fr 1fr;
     }
 
+    .explore-ayodhya-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     .hotel-listing-card {
         grid-template-columns: 200px minmax(0, 1fr);
     }
@@ -3802,6 +3996,14 @@ button:disabled {
     .video-section-grid,
     .destination-feature-grid,
     .destination-gallery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .explore-ayodhya-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .explore-city-grid {
         grid-template-columns: 1fr;
     }
 
