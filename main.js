@@ -17,6 +17,7 @@ const aiTripPlannerForm = document.getElementById("aiTripPlannerForm");
 const aiPlanResult = document.getElementById("aiPlanResult");
 const aiPlanText = document.getElementById("aiPlanText");
 const aiPlanWhatsApp = document.getElementById("aiPlanWhatsApp");
+const aiPlanCab = document.getElementById("aiPlanCab");
 const weatherSuggestionIcon = document.getElementById("weatherSuggestionIcon");
 const weatherSuggestionLabel = document.getElementById("weatherSuggestionLabel");
 const weatherSuggestionTitle = document.getElementById("weatherSuggestionTitle");
@@ -416,6 +417,11 @@ if (aiTripPlannerForm) {
 
         if (aiPlanResult) {
             aiPlanResult.hidden = false;
+            aiPlanResult.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+
+        if (aiPlanCab) {
+            aiPlanCab.hidden = cab !== "Yes";
         }
 
         if (aiPlanWhatsApp) {

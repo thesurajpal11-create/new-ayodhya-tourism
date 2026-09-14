@@ -319,6 +319,23 @@ button:disabled {
     font-weight: 800;
 }
 
+.ai-plan-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.55rem;
+}
+
+.ai-plan-cab {
+    flex: 0 0 auto;
+    padding: 0.72rem 1rem;
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+
 /* =========================
    Verified Local Guides
 ========================= */
@@ -3794,6 +3811,26 @@ button:disabled {
 
 .whatsapp-float {
     background: #1fa64a;
+}
+
+.chatbot-float {
+    border: 0;
+    background: #e15b13;
+    font: inherit;
+    cursor: pointer;
+}
+
+.floating-contact #chatbot-trigger {
+    position: static;
+    width: auto;
+    height: auto;
+    border-radius: 999px;
+    box-shadow: var(--shadow-md);
+    z-index: auto;
+}
+
+.chatbot-float:hover {
+    background: #c94f0e;
 }
 
 /* =========================
