@@ -569,7 +569,12 @@ async function sendFormSubmitEmail(form) {
         },
     });
 
-    return response.ok;
+    if (!response.ok) {
+        return false;
+    }
+
+    const result = await response.json().catch(() => null);
+    return result?.success === true || result?.success === "true";
 }
 
 function seedDefaultReviews() {
