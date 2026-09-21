@@ -79,6 +79,7 @@ const ROUTE_DATA = {
 const sourceSelect = document.getElementById("cabSource");
 const destinationSelect = document.getElementById("cabDestination");
 const tripTypeSelect = document.getElementById("cabTripType");
+const travelTypeSelect = document.getElementById("cabTravelType");
 const pickupDateInput = document.getElementById("cabPickupDate");
 const swapRouteButton = document.getElementById("swapRoute");
 const estimateButton = document.getElementById("cabEstimateButton");
@@ -191,10 +192,11 @@ function calculateVehicleFare(vehicleId, routeInfo, tripType) {
     return fare;
 }
 
-function buildWhatsAppLink({ sourceId, destinationId, tripType, vehicleName, fare, routeInfo }) {
+function buildWhatsAppLink({ sourceId, destinationId, tripType, travelType, vehicleName, fare, routeInfo }) {
     const sourceLabel = getLocationLabel(sourceId);
     const destinationLabel = getLocationLabel(destinationId);
     const tripLabel = tripType === "round" ? "Round Trip" : tripType === "local" ? "Local Full Day" : "One Way";
+    const travelLabel = travelType === "family" ? "Family" : "Solo";
     const dateLine = pickupDateInput?.value ? `\nPickup Date: ${pickupDateInput.value}` : "";
 
     const message = [
@@ -202,6 +204,7 @@ function buildWhatsAppLink({ sourceId, destinationId, tripType, vehicleName, far
         `From: ${sourceLabel}`,
         `To: ${destinationLabel}`,
         `Trip Type: ${tripLabel}`,
+        `Traveling With: ${travelLabel}`,
         `Vehicle: ${vehicleName}`,
         `Estimated Fare: ${formatRupees(fare)}`,
         routeInfo.km ? `Approx Distance: ${routeInfo.km} km` : "",
@@ -221,6 +224,7 @@ function renderRates() {
     const sourceId = getLocationId(sourceValue);
     const destinationId = getLocationId(destinationValue);
     const tripType = tripTypeSelect?.value || "one-way";
+    const travelType = travelTypeSelect?.value || "";
 
     if (!sourceId || !destinationId || !rateResults) {
         return;
@@ -244,6 +248,7 @@ function renderRates() {
             <div class="cab-route-chip"><span>To</span><strong>${escapeHtml(destinationLabel)}</strong></div>
             <div class="cab-route-meta">
                 <span>${escapeHtml(tripLabel)}</span>
+                <span>${escapeHtml(travelType === "family" ? "Family" : "Solo")}</span>
                 <span>${escapeHtml(routeInfo.duration)}</span>
                 <span>${routeInfo.km} km approx.</span>
                 ${routeInfo.isEstimate ? "<span>Estimated route — confirm with team</span>" : ""}
@@ -264,6 +269,7 @@ function renderRates() {
             sourceId,
             destinationId,
             tripType: effectiveTripType,
+            travelType,
             vehicleName: vehicle.name,
             fare,
             routeInfo,
@@ -313,10 +319,11 @@ function showEstimate() {
     const sourceId = getLocationId(sourceValue);
     const destinationId = getLocationId(destinationValue);
     const tripType = tripTypeSelect?.value || "one-way";
+    const travelType = travelTypeSelect?.value || "";
 
-    if (!sourceId || !destinationId) {
+    if (!sourceId || !destinationId || !travelType) {
         if (estimateSummary) {
-            estimateText.textContent = "Please choose valid source and destination from the list.";
+            estimateText.textContent = "Please choose source, destination, and whether you are traveling solo or with family.";
             estimateSummary.hidden = false;
         }
         return;
@@ -354,7 +361,7 @@ if (estimateButton) {
     estimateButton.addEventListener("click", showEstimate);
 }
 
-[sourceSelect, destinationSelect, tripTypeSelect, pickupDateInput].forEach((element) => {
+[sourceSelect, destinationSelect, tripTypeSelect, travelTypeSelect, pickupDateInput].forEach((element) => {
     element?.addEventListener("change", handleRouteChange);
 });
 

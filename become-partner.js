@@ -1,4 +1,6 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
+const PARTNER_HOTEL_STORAGE_KEY = "ramnagariActivePartnerHotel";
+const PARTNER_EMAIL = "ayodhyaramnagritourism@gmail.com";
 
 const form = document.getElementById("partnerApplicationForm");
 const statusBox = document.getElementById("partnerApplicationStatus");
@@ -23,18 +25,58 @@ async function submitApplication(event) {
     statusBox.className = "hotel-status";
 
     try {
-        const response = await fetch(`${API_BASE_URL}/api/partners/applications`, {
+        const emailResponse = await fetch(`https://formsubmit.co/ajax/${PARTNER_EMAIL}`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                ...payload,
+                _subject: `New Hotel Partner Application: ${payload.hotel_name}`,
+                _template: "table",
+                _captcha: "false",
+                _replyto: payload.email,
+            }),
         });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.detail || "Could not submit application");
+        const emailData = await emailResponse.json().catch(() => ({}));
+        if (!emailResponse.ok || emailData.success === false) {
+            throw new Error("Email could not be sent. Please try again.");
+        }
+
+        const activeHotel = {
+            display_name: payload.hotel_name,
+            category: "Budget",
+            public_price: 0,
+            partner_price: 0,
+            rooms_available: payload.number_of_rooms,
+            distance_from_tour_km: 0,
+            nearby_place: payload.hotel_address,
+            amenities: ["Comfortable Rooms", "Hotel Partner Listing"],
+            check_in_time: "12:00 PM",
+            check_out_time: "11:00 AM",
+            image_url: payload.hotel_photos || "ayodhya.jpg",
+            destination_name: "Ayodhya",
+        };
+        window.localStorage.setItem(PARTNER_HOTEL_STORAGE_KEY, JSON.stringify(activeHotel));
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/partners/applications`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+            if (!response.ok) {
+                throw new Error("Backend application was not saved");
+            }
+        } catch (backendError) {
+            console.warn("Partner application API unavailable; email and listing were saved.", backendError);
+        }
         form.reset();
-        statusBox.textContent = "Application submitted successfully. Admin will review it soon.";
+        statusBox.textContent = "Details sent to your email and hotel added successfully. The previous listing was replaced.";
         statusBox.className = "hotel-status success";
     } catch (error) {
-        statusBox.textContent = error.message || "Unable to submit application.";
+        statusBox.textContent = error.message || "Unable to send hotel details. Please try again.";
         statusBox.className = "hotel-status error";
     }
 }

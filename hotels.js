@@ -1,4 +1,5 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
+const PARTNER_HOTEL_STORAGE_KEY = "ramnagariActivePartnerHotel";
 
 const destinationSelect = document.getElementById("hotelDestinationSelect");
 const categorySelect = document.getElementById("hotelCategorySelect");
@@ -155,6 +156,15 @@ function getDestinationImage(destinationName, index = 0) {
     return baseImage;
 }
 
+function getActivePartnerHotel() {
+    try {
+        const rawHotel = window.localStorage.getItem(PARTNER_HOTEL_STORAGE_KEY);
+        return rawHotel ? JSON.parse(rawHotel) : null;
+    } catch (error) {
+        return null;
+    }
+}
+
 function getStarCount(category) {
     const match = String(category || "").match(/^(\d)\s*Star/i);
     return match ? Number(match[1]) : 0;
@@ -249,7 +259,7 @@ function hotelOptionTemplate(option, index) {
                     </div>
                     <div class="hotel-listing-price">
                         <span class="hotel-price-label">From</span>
-                        <strong class="hotel-price-value">${formatRupees(price)}</strong>
+                        <strong class="hotel-price-value">${price ? formatRupees(price) : "Contact for price"}</strong>
                         <span class="hotel-price-unit">${escapeHtml(priceLabel)} · per room / night</span>
                     </div>
                     <a href="booking.html" class="hotel-select-dates-btn">Select dates</a>
@@ -273,10 +283,18 @@ function renderHotelOptions(options) {
 }
 
 function renderDemoHotels() {
-    selectedDestinationName = selectedDestinationName || "Ayodhya";
-    destinationSelect.innerHTML = `<option value="demo">Ayodhya</option>`;
-    setHotelStatus("Showing sample hotel layout. Start backend for live prices.", "error");
-    renderHotelOptions(DEMO_HOTEL_OPTIONS);
+    const activeHotel = getActivePartnerHotel();
+    selectedDestinationName = activeHotel?.destination_name || selectedDestinationName || "Ayodhya";
+    destinationSelect.innerHTML = `<option value="partner">${escapeHtml(selectedDestinationName)}</option>`;
+
+    if (activeHotel) {
+        setHotelStatus("Showing the latest hotel partner listing.", "success");
+        renderHotelOptions([activeHotel]);
+        return;
+    }
+
+    setHotelStatus("No hotel listing is available yet. Become a hotel partner to add one.");
+    hotelOptionsGrid.innerHTML = "";
 }
 
 function bindFavoriteButtons() {
@@ -331,6 +349,17 @@ async function loadDestinations() {
 }
 
 async function loadHotelOptions() {
+    const activeHotel = getActivePartnerHotel();
+    if (activeHotel) {
+        selectedDestinationName = activeHotel.destination_name || "Ayodhya";
+        destinationSelect.innerHTML = `<option value="partner">${escapeHtml(selectedDestinationName)}</option>`;
+        renderHotelOptions([activeHotel]);
+        return;
+    }
+
+    renderDemoHotels();
+    return;
+
     const destinationId = destinationSelect.value;
     const category = categorySelect.value;
     const selectedOption = destinationSelect.selectedOptions[0];
