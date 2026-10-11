@@ -84,7 +84,7 @@ Access the application at: http://localhost:5500
 
 3. **render.yaml Configuration**
    
-   Already configured in `backend/render.yaml`:
+   Configured in the root `render.yaml`:
    - **Build Command:** `pip install -r requirements.txt`
    - **Start Command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`
    - **Runtime:** Python
@@ -100,6 +100,23 @@ DATABASE_URL=mysql+pymysql://root:root1234@localhost:3306/ayodhya_db
 ALLOWED_ORIGINS=https://your-frontend-domain.com,https://yourdomain.com
 API_DEBUG=False
 ```
+
+### Deepotsav Enquiry Email
+
+The Deepotsav form sends JSON to `POST /api/enquiries/deepotsav` on the separate `ramnagari-deepotsav-enquiries` Render service defined in the root `render.yaml`. Configure these variables in that service's Render Environment settings; SMTP credentials must never be placed in frontend JavaScript:
+
+| Variable | Value |
+|----------|-------|
+| `SMTP_HOST` | Your email provider's SMTP host, for example `smtp.gmail.com` |
+| `SMTP_PORT` | `587` for STARTTLS, or `465` for SSL |
+| `SMTP_USERNAME` | The sending mailbox username |
+| `SMTP_PASSWORD` | A provider-issued app password or SMTP credential |
+| `ENQUIRY_TO_EMAIL` | `ayodhyaramnagritourism@gmail.com` or your preferred receiving mailbox |
+| `ALLOWED_ORIGINS` | `https://ramnagritourism.com,https://www.ramnagritourism.com` |
+
+For Gmail, use an App Password with two-step verification enabled, not the mailbox login password. Render reads these values from its environment; do not commit them to the repository. After the new service deploys, copy its public HTTPS URL and set `window.RAMNAGARI_API_BASE_URL` in `config.js` to that URL (no trailing slash). This URL is public configuration, not a secret. Redeploy the website after changing it, then send a test enquiry; success is shown only after SMTP accepts the message. For local development, add the local frontend origin to `ALLOWED_ORIGINS` on the email service.
+
+The existing `ayodhya-tourism-backend` service still starts `main:app`. In this checkout, importing `main.py` currently fails because its pre-existing `app` package is absent. Deploy the new `ramnagari-deepotsav-enquiries` service independently; the package enquiry API does not import or depend on the legacy backend.
 
 ---
 

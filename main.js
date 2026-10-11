@@ -34,6 +34,9 @@ const mapPopupNote = document.getElementById("mapPopupNote");
 const mapPopupClose = document.getElementById("mapPopupClose");
 const mapPopupBackdrop = document.getElementById("mapPopupBackdrop");
 const mapPins = document.querySelectorAll(".map-pin");
+const deepotsavModal = document.getElementById("deepotsavModal");
+const deepotsavSection = document.getElementById("deepotsav-package");
+const floatingContact = document.querySelector(".floating-contact");
 const reviewsStorageKey = "ramnagariTourismReviews";
 const reviewsSeededKey = "ramnagariTourismReviewsSeeded";
 const minimumReviewRating = 4;
@@ -275,6 +278,91 @@ if (mapPopupClose) {
 
 if (mapPopupBackdrop) {
     mapPopupBackdrop.addEventListener("click", closeAyodhyaMapPopup);
+}
+
+if (deepotsavModal) {
+    const deepotsavDialog = deepotsavModal.querySelector(".deepotsav-modal-dialog");
+    const deepotsavCloseButtons = deepotsavModal.querySelectorAll("[data-deepotsav-close]");
+    const deepotsavStorageKey = "ramnagariDeepotsavPopupSeen";
+    let deepotsavPreviousFocus = null;
+
+    function closeDeepotsavModal() {
+        deepotsavModal.classList.remove("is-open");
+        deepotsavModal.setAttribute("aria-hidden", "true");
+        deepotsavModal.setAttribute("inert", "");
+        document.body.style.overflow = "";
+
+        if (deepotsavPreviousFocus instanceof HTMLElement) {
+            deepotsavPreviousFocus.focus();
+        }
+    }
+
+    function openDeepotsavModal() {
+        deepotsavPreviousFocus = document.activeElement;
+        deepotsavModal.removeAttribute("inert");
+        deepotsavModal.setAttribute("aria-hidden", "false");
+        deepotsavModal.classList.add("is-open");
+        document.body.style.overflow = "hidden";
+
+        try {
+            sessionStorage.setItem(deepotsavStorageKey, "true");
+        } catch (error) {
+            // Storage may be unavailable in private browsing modes.
+        }
+
+        window.setTimeout(() => deepotsavDialog?.focus(), 100);
+    }
+
+    let hasSeenDeepotsavPopup = false;
+
+    try {
+        hasSeenDeepotsavPopup = sessionStorage.getItem(deepotsavStorageKey) === "true";
+    } catch (error) {
+        hasSeenDeepotsavPopup = false;
+    }
+
+    deepotsavCloseButtons.forEach((button) => {
+        button.addEventListener("click", closeDeepotsavModal);
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (!deepotsavModal.classList.contains("is-open")) {
+            return;
+        }
+
+        if (event.key === "Escape") {
+            closeDeepotsavModal();
+            return;
+        }
+
+        if (event.key !== "Tab" || !deepotsavDialog) {
+            return;
+        }
+
+        const focusableElements = deepotsavDialog.querySelectorAll("a[href], button:not(:disabled), [tabindex]:not([tabindex='-1'])");
+        const firstFocusable = focusableElements[0];
+        const lastFocusable = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey && document.activeElement === firstFocusable) {
+            event.preventDefault();
+            lastFocusable?.focus();
+        } else if (!event.shiftKey && document.activeElement === lastFocusable) {
+            event.preventDefault();
+            firstFocusable?.focus();
+        }
+    });
+
+    if (!hasSeenDeepotsavPopup) {
+        window.setTimeout(openDeepotsavModal, 800);
+    }
+}
+
+if (deepotsavSection && floatingContact && window.matchMedia("(max-width: 640px)").matches && "IntersectionObserver" in window) {
+    const deepotsavContactObserver = new IntersectionObserver(([entry]) => {
+        document.body.classList.toggle("deepotsav-in-view", entry.isIntersecting);
+    });
+
+    deepotsavContactObserver.observe(deepotsavSection);
 }
 
 document.addEventListener("keydown", (event) => {

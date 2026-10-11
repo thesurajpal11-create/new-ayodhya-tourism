@@ -1,3 +1,6 @@
+// Set to the deployed FastAPI base URL when the API is hosted separately.
+window.RAMNAGARI_API_BASE_URL = window.RAMNAGARI_API_BASE_URL || "";
+
 // config.js
 const ChatbotConfig = {
   // Replace with your actual Gemini API Key
