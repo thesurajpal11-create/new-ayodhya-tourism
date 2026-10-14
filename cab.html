@@ -319,5 +319,40 @@
 
     <script src="main.js"></script>
     <script src="cab.js"></script>
+    <!-- EmailJS Library -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+  (function () {
+    emailjs.init({
+      publicKey: "g83wBrbuLt7eAcJVD"
+    });
+  })();
+
+  // Read hotel name from the QR link
+  const params = new URLSearchParams(window.location.search);
+  const hotelName = params.get("hotel");
+
+  // Prevent duplicate notifications in the same browser tab
+  if (hotelName && !sessionStorage.getItem("qr_email_sent")) {
+    const scanTime = new Date().toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata"
+    });
+
+    emailjs.send(
+      "service_p0yslhj",
+      "template_bifxvvq",
+      {
+        hotel_name: hotelName,
+        scan_time: scanTime
+      }
+    ).then(function () {
+      sessionStorage.setItem("qr_email_sent", "yes");
+      console.log("QR notification email sent successfully.");
+    }).catch(function (error) {
+      console.error("Email notification failed:", error);
+    });
+  }
+</script>
 </body>
 </html>
