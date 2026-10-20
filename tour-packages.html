@@ -40,16 +40,16 @@
                     <span></span>
                 </button>
 
-                <div class="nav-menu" id="navMenu">
+                <nav class="nav-menu" id="navMenu" aria-label="Primary navigation">
                     <a href="index.html">Home</a>
                     <a href="destinations.html">Destination</a>
                     <a href="tour-packages.html">Tour Packages</a>
                     <a href="hotels.html">Hotels</a>
-                    <a href="booking1.html">Book & Pay</a>
-                    <a href="cab.html">Cab Tariff</a>
+                    <a href="cab.html">Cab Booking</a>
                     <a href="contact.html">Contact</a>
+                    <a href="booking1.html" class="nav-book-button">Book Now</a>
                     <a href="tel:+917607745628" class="call-button">Call Now</a>
-                </div>
+                </nav>
             </div>
         </nav>
     </header>
@@ -68,61 +68,115 @@
         <section class="section" id="tour-listings">
             <div class="container">
                 <div class="tour-grid">
-                    <article class="tour-card deepotsav-tour-listing-card">
-                        <div class="deepotsav-tour-listing-image">
+                    <article class="tour-card premium-tour-card deepotsav-tour-listing-card">
+                        <div class="deepotsav-tour-listing-image premium-tour-image">
                             <img src="ram-mandir.jpeg" alt="Ram Mandir in Ayodhya for Deepotsav visitors" loading="lazy">
                             <span aria-hidden="true">&#x1FA94;</span>
                         </div>
                         <div class="tour-card-body">
-                            <p class="tour-meta">Festive Ayodhya | Custom duration</p>
+                            <p class="tour-meta">Custom duration | 2026 dates to be announced</p>
                             <h2>Ayodhya Deepotsav Special</h2>
-                            <p>Plan Ram Mandir darshan, Hanuman Garhi, Kanak Bhawan, Ram Ki Paidi and Sarayu Aarti with hotel, cab and itinerary support. 2026 event dates are not yet announced.</p>
-                            <a href="deepotsav-tour-package.html" class="text-button">View Package</a>
+                            <p class="package-destinations">Ram Mandir <span aria-hidden="true">•</span> Hanuman Garhi <span aria-hidden="true">•</span> Ram Ki Paidi <span aria-hidden="true">•</span> Saryu Aarti</p>
+                            <ul class="package-inclusions">
+                                <li><strong>Transport:</strong> Cab optional; quoted separately</li>
+                                <li><strong>Hotel:</strong> Optional; quoted separately</li>
+                                <li><strong>Meals:</strong> Not included</li>
+                            </ul>
+                            <p class="package-price">Custom quote <small>Price confirmed before booking</small></p>
+                            <div class="package-card-actions">
+                                <a href="deepotsav-tour-package.html" class="package-view-button">View Package</a>
+                                <a href="https://wa.me/917607745628?text=Hello%20Ramnagari%20Tourism%2C%20please%20share%20details%20and%20a%20quote%20for%20the%20Ayodhya%20Deepotsav%20Special." class="package-enquire-button" target="_blank" rel="noopener">Enquire Now</a>
+                            </div>
                         </div>
                     </article>
-                    <article class="tour-card">
-                        <img src="ayodhya.jpg" alt="Ayodhya Local Tour">
+                    <article class="tour-card premium-tour-card">
+                        <img src="ram-mandir.jpeg" alt="Shri Ram Mandir in Ayodhya" loading="lazy">
                         <div class="tour-card-body">
-                            <h3>Ayodhya Local Tour</h3>
                             <p class="tour-meta">1 Day | Local Sightseeing</p>
-                            <p>Temple visits, ghats, and local places with smooth city travel support.</p>
-                            <a href="ayodhya-tour-package.html" class="text-button">View Details</a>
+                            <h2>Ayodhya Spiritual Journey</h2>
+                            <p class="package-destinations">Ram Mandir <span aria-hidden="true">•</span> Hanuman Garhi <span aria-hidden="true">•</span> Saryu Aarti</p>
+                            <ul class="package-inclusions">
+                                <li><strong>Transport:</strong> Cab quoted separately</li>
+                                <li><strong>Hotel:</strong> Not included; optional add-on</li>
+                                <li><strong>Meals:</strong> Not included</li>
+                            </ul>
+                            <p class="package-price">Custom quote <small>Price confirmed before booking</small></p>
+                            <div class="package-card-actions">
+                                <a href="ayodhya-tour-package.html" class="package-view-button">View Package</a>
+                                <a href="https://wa.me/917607745628?text=Hello%20Ramnagari%20Tourism%2C%20please%20share%20details%20and%20a%20quote%20for%20the%20Ayodhya%20Spiritual%20Journey." class="package-enquire-button" target="_blank" rel="noopener">Enquire Now</a>
+                            </div>
                         </div>
                     </article>
-                    <article class="tour-card">
-                        <img src="kashi.jpg" alt="Ayodhya and Prayagraj">
+                    <article class="tour-card premium-tour-card">
+                        <img src="Triveni Sangam.jpeg" alt="Triveni Sangam in Prayagraj" loading="lazy">
                         <div class="tour-card-body">
-                            <h3>Ayodhya + Prayagraj</h3>
                             <p class="tour-meta">2 Days | Religious Tour</p>
-                            <p>Ideal for spiritual visitors needing a simple route with comfortable travel.</p>
-                            <a href="../prayagraj-tour-package.html" class="text-button">View Details</a>
+                            <h2>Prayagraj Spiritual Journey</h2>
+                            <p class="package-destinations">Triveni Sangam <span aria-hidden="true">•</span> Bade Hanuman Ji <span aria-hidden="true">•</span> Anand Bhavan</p>
+                            <ul class="package-inclusions">
+                                <li><strong>Transport:</strong> Cab quoted separately</li>
+                                <li><strong>Hotel:</strong> Not included; optional add-on</li>
+                                <li><strong>Meals:</strong> Not included</li>
+                            </ul>
+                            <p class="package-price">Custom quote <small>Price confirmed before booking</small></p>
+                            <div class="package-card-actions">
+                                <a href="prayagraj-tour-package.html" class="package-view-button">View Package</a>
+                                <a href="https://wa.me/917607745628?text=Hello%20Ramnagari%20Tourism%2C%20please%20share%20details%20and%20a%20quote%20for%20the%20Prayagraj%20Spiritual%20Journey." class="package-enquire-button" target="_blank" rel="noopener">Enquire Now</a>
+                            </div>
                         </div>
                     </article>
-                    <article class="tour-card">
-                        <img src="varanasi.jpg" alt="Ayodhya and Varanasi">
+                    <article class="tour-card premium-tour-card">
+                        <img src="Dashashwamedh Ghat.jpeg" alt="Dashashwamedh Ghat in Varanasi" loading="lazy">
                         <div class="tour-card-body">
-                            <h3>Ayodhya + Varanasi</h3>
                             <p class="tour-meta">3 Days | Spiritual Circuit</p>
-                            <p>Temple city package with thoughtful planning for families and pilgrims.</p>
-                            <a href="../varanasi-tour-package.html" class="text-button">View Details</a>
+                            <h2>Varanasi Spiritual Journey</h2>
+                            <p class="package-destinations">Kashi Vishwanath <span aria-hidden="true">•</span> Ganga Aarti <span aria-hidden="true">•</span> Sarnath</p>
+                            <ul class="package-inclusions">
+                                <li><strong>Transport:</strong> Cab quoted separately</li>
+                                <li><strong>Hotel:</strong> Not included; optional add-on</li>
+                                <li><strong>Meals:</strong> Not included</li>
+                            </ul>
+                            <p class="package-price">Custom quote <small>Price confirmed before booking</small></p>
+                            <div class="package-card-actions">
+                                <a href="varanasi-tour-package.html" class="package-view-button">View Package</a>
+                                <a href="https://wa.me/917607745628?text=Hello%20Ramnagari%20Tourism%2C%20please%20share%20details%20and%20a%20quote%20for%20the%20Varanasi%20Spiritual%20Journey." class="package-enquire-button" target="_blank" rel="noopener">Enquire Now</a>
+                            </div>
                         </div>
                     </article>
-                    <article class="tour-card">
-                        <img src="chitrakoot.jpg" alt="Chitrakoot Spiritual Tour">
+                    <article class="tour-card premium-tour-card">
+                        <img src="chitrakoot.jpg" alt="Spiritual sites in Chitrakoot" loading="lazy">
                         <div class="tour-card-body">
-                            <h3>Chitrakoot Spiritual Tour</h3>
                             <p class="tour-meta">2 Days | Devotional Travel</p>
-                            <p>Peaceful outstation route with comfortable travel and simple stop planning.</p>
-                            <a href="../chitrakoot-tour-package.html" class="text-button">View Details</a>
+                            <h2>Chitrakoot Spiritual Journey</h2>
+                            <p class="package-destinations">Ram Ghat <span aria-hidden="true">•</span> Kamadgiri <span aria-hidden="true">•</span> Gupt Godavari</p>
+                            <ul class="package-inclusions">
+                                <li><strong>Transport:</strong> Cab quoted separately</li>
+                                <li><strong>Hotel:</strong> Not included; optional add-on</li>
+                                <li><strong>Meals:</strong> Not included</li>
+                            </ul>
+                            <p class="package-price">Custom quote <small>Price confirmed before booking</small></p>
+                            <div class="package-card-actions">
+                                <a href="chitrakoot-tour-package.html" class="package-view-button">View Package</a>
+                                <a href="https://wa.me/917607745628?text=Hello%20Ramnagari%20Tourism%2C%20please%20share%20details%20and%20a%20quote%20for%20the%20Chitrakoot%20Spiritual%20Journey." class="package-enquire-button" target="_blank" rel="noopener">Enquire Now</a>
+                            </div>
                         </div>
                     </article>
-                    <article class="tour-card">
-                        <img src="mathura.jpg" alt="Mathura Vrindavan Yatra">
+                    <article class="tour-card premium-tour-card">
+                        <img src="mathura.jpg" alt="Temples in Mathura and Vrindavan" loading="lazy">
                         <div class="tour-card-body">
-                            <h3>Mathura Vrindavan Yatra</h3>
                             <p class="tour-meta">3 Days | Family Tour</p>
-                            <p>Popular devotional route with hotel coordination and reliable road travel.</p>
-                            <a href="../mathura-vrindavan-tour-package.html" class="text-button">View Details</a>
+                            <h2>Mathura &amp; Vrindavan Yatra</h2>
+                            <p class="package-destinations">Krishna Janmabhoomi <span aria-hidden="true">•</span> Banke Bihari <span aria-hidden="true">•</span> Prem Mandir</p>
+                            <ul class="package-inclusions">
+                                <li><strong>Transport:</strong> Cab quoted separately</li>
+                                <li><strong>Hotel:</strong> Not included; optional add-on</li>
+                                <li><strong>Meals:</strong> Not included</li>
+                            </ul>
+                            <p class="package-price">Custom quote <small>Price confirmed before booking</small></p>
+                            <div class="package-card-actions">
+                                <a href="mathura-vrindavan-tour-package.html" class="package-view-button">View Package</a>
+                                <a href="https://wa.me/917607745628?text=Hello%20Ramnagari%20Tourism%2C%20please%20share%20details%20and%20a%20quote%20for%20the%20Mathura%20and%20Vrindavan%20Yatra." class="package-enquire-button" target="_blank" rel="noopener">Enquire Now</a>
+                            </div>
                         </div>
                     </article>
                 </div>
@@ -145,7 +199,7 @@
                 <a href="tour-packages.html">Tour Packages</a>
                 <a href="cab.html">Cab Tariff</a>
                 <a href="hotels.html">Hotels</a>
-                <a href="booking.html">Book & Pay</a>
+                <a href="booking1.html">Book & Pay</a>
                 <a href="destinations.html">Destinations</a>
             </div>
             <div class="footer-contact">
