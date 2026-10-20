@@ -11,10 +11,24 @@ function safeText(value) {
     return node.innerHTML;
 }
 
+function renderTravelDeskAssistance(message) {
+    if (!localGuidesList) return;
+    localGuidesList.innerHTML = `
+        <article class="local-guide-assistance">
+            <h3>Plan your visit with our travel team</h3>
+            <p>${safeText(message)}</p>
+            <div class="local-guide-assistance-actions">
+                <a href="https://wa.me/917607745628?text=Hello%20Ramnagari%20Tourism%2C%20I%20need%20help%20planning%20my%20visit." target="_blank" rel="noopener">Chat on WhatsApp</a>
+                <a href="tel:+917607745628">Call our team</a>
+            </div>
+        </article>
+    `;
+}
+
 function renderLocalGuides() {
     if (!localGuidesList) return;
     if (!onlineLocalGuides.length) {
-        localGuidesList.innerHTML = "<p class=\"local-guides-empty\">No guide is marked online right now. You can still send your question to our travel desk.</p>";
+        renderTravelDeskAssistance("No local guide is available online right now. Contact us for temple visits, sightseeing, cabs and travel arrangements.");
         return;
     }
     localGuidesList.innerHTML = onlineLocalGuides.map((guide) => `
@@ -33,7 +47,7 @@ async function loadOnlineLocalGuides() {
         onlineLocalGuides = await response.json();
         renderLocalGuides();
     } catch (error) {
-        localGuidesList.innerHTML = "<p class=\"local-guides-empty\">Local guide service is temporarily unavailable. Please contact our travel desk.</p>";
+        renderTravelDeskAssistance("Live guide availability is temporarily unavailable. Our team can still help with temple visits, sightseeing, cabs and travel arrangements.");
     }
 }
 

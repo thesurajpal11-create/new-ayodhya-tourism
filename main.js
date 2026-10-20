@@ -16,6 +16,7 @@ const scrollTopButton = document.getElementById("scrollTop");
 const aiTripPlannerForm = document.getElementById("aiTripPlannerForm");
 const aiPlanResult = document.getElementById("aiPlanResult");
 const aiPlanText = document.getElementById("aiPlanText");
+const aiPlanItinerary = document.getElementById("aiPlanItinerary");
 const aiPlanWhatsApp = document.getElementById("aiPlanWhatsApp");
 const aiPlanCab = document.getElementById("aiPlanCab");
 const weatherSuggestionIcon = document.getElementById("weatherSuggestionIcon");
@@ -38,38 +39,8 @@ const deepotsavModal = document.getElementById("deepotsavModal");
 const deepotsavSection = document.getElementById("deepotsav-package");
 const floatingContact = document.querySelector(".floating-contact");
 const reviewsStorageKey = "ramnagariTourismReviews";
-const reviewsSeededKey = "ramnagariTourismReviewsSeeded";
 const minimumReviewRating = 4;
-const defaultReviews = [
-    {
-        id: 1704101400001,
-        name: "Amit Sharma",
-        rating: 5,
-        message: "Ramnagari Tourism planned our Ayodhya trip very well. Cab was clean, driver was polite, and the whole family felt comfortable.",
-        createdAt: "2026-04-18T10:30:00.000Z",
-    },
-    {
-        id: 1704101400002,
-        name: "Priya Verma",
-        rating: 5,
-        message: "Very smooth service for darshan and local sightseeing. The team responded quickly and helped us with hotel and cab details.",
-        createdAt: "2026-04-21T12:15:00.000Z",
-    },
-    {
-        id: 1704101400003,
-        name: "Sandeep Gupta",
-        rating: 4,
-        message: "Good tour package and transparent pricing. Our Prayagraj route was managed nicely and pickup was on time.",
-        createdAt: "2026-04-24T15:20:00.000Z",
-    },
-    {
-        id: 1704101400004,
-        name: "Neha Singh",
-        rating: 5,
-        message: "Best travel support for a family trip. Booking was simple and the driver knew the temple routes very well.",
-        createdAt: "2026-04-27T09:10:00.000Z",
-    },
-];
+const unverifiedReviewIds = new Set([1704101400001, 1704101400002, 1704101400003, 1704101400004]);
 
 let currentSlideIndex = 0;
 let sliderIntervalId = null;
@@ -250,19 +221,30 @@ if (pickupDate) {
     pickupDate.min = `${year}-${month}-${day}`;
 }
 
-if (navToggle) {
+if (navToggle && navMenu) {
     navToggle.addEventListener("click", () => {
         const isOpen = navMenu.classList.toggle("is-open");
         navToggle.setAttribute("aria-expanded", String(isOpen));
+        navToggle.setAttribute("aria-label", isOpen ? "Close navigation menu" : "Open navigation menu");
+    });
+
+    navMenu.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+            navMenu.classList.remove("is-open");
+            navToggle.setAttribute("aria-expanded", "false");
+            navToggle.setAttribute("aria-label", "Open navigation menu");
+        });
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && navMenu.classList.contains("is-open")) {
+            navMenu.classList.remove("is-open");
+            navToggle.setAttribute("aria-expanded", "false");
+            navToggle.setAttribute("aria-label", "Open navigation menu");
+            navToggle.focus();
+        }
     });
 }
-
-document.querySelectorAll(".nav-menu a").forEach((link) => {
-    link.addEventListener("click", () => {
-        navMenu.classList.remove("is-open");
-        navToggle?.setAttribute("aria-expanded", "false");
-    });
-});
 
 mapPins.forEach((pin) => {
     pin.addEventListener("click", () => {
@@ -480,27 +462,95 @@ if (aiTripPlannerForm) {
         event.preventDefault();
 
         const formData = new FormData(aiTripPlannerForm);
+        const destination = formData.get("destination");
         const budget = formData.get("budget");
-        const days = formData.get("days");
+        const days = Number(formData.get("days"));
         const travellerType = formData.get("traveller_type");
         const stay = formData.get("stay");
         const cab = formData.get("cab");
 
-        if (![budget, days, travellerType, stay, cab].every(Boolean)) {
-            Array.from(aiTripPlannerForm.querySelectorAll("select")).find((field) => !field.value)?.focus();
+        if (!aiTripPlannerForm.reportValidity()) {
             return;
         }
 
+        const destinationItineraries = {
+            Ayodhya: [
+                ["Ram Mandir darshan", "Hanuman Garhi", "Evening at Ram Ki Paidi"],
+                ["Kanak Bhawan", "Dashrath Mahal", "Saryu Ghat aarti"],
+                ["Guptar Ghat", "Bharat Kund", "Relaxed local market visit"],
+                ["Nageshwarnath Temple", "Mani Parvat", "Return to a favourite ghat"],
+                ["Revisit Ram Mandir area", "Explore nearby temples", "Leisure evening by the Saryu"],
+                ["Optional Naimisharanya day trip", "Visit key local temples", "Rest or depart at your pace"],
+            ],
+            Varanasi: [
+                ["Kashi Vishwanath Temple", "Explore the old city lanes", "Dashashwamedh Ghat aarti"],
+                ["Assi Ghat sunrise", "Sankat Mochan Temple", "Manikarnika and nearby ghats"],
+                ["Sarnath", "Bharat Mata Temple", "Evening by the Ganga"],
+                ["Morning boat ride", "Explore Varanasi markets", "Choose a ghat for a relaxed evening"],
+                ["Ramnagar Fort", "Durga Kund and nearby temples", "Ganga aarti"],
+                ["Revisit a favourite temple", "Local food and shopping", "Depart at your pace"],
+            ],
+            Prayagraj: [
+                ["Triveni Sangam", "Bade Hanuman Mandir", "Evening at the riverfront"],
+                ["Anand Bhavan", "Swaraj Bhavan", "Chandra Shekhar Azad Park"],
+                ["Allahabad Fort exterior and riverside", "All Saints Cathedral", "Local market visit"],
+                ["Khusro Bagh", "Prayagraj Museum", "Relaxed evening near the Sangam"],
+                ["Revisit Sangam", "Jawahar Planetarium", "Explore local cuisine"],
+                ["Flexible sightseeing or rest", "Pick up local souvenirs", "Depart at your pace"],
+            ],
+            Chitrakoot: [
+                ["Ramghat", "Kamadgiri Parikrama", "Evening by the Mandakini"],
+                ["Gupt Godavari caves", "Sati Anusuya Ashram", "Relaxed evening at Ramghat"],
+                ["Bharat Milap Temple", "Hanuman Dhara", "Explore the local market"],
+                ["Sphatik Shila", "Janki Kund", "Sunset by the river"],
+                ["Revisit a favourite shrine", "Explore nearby nature spots", "Rest and enjoy the town"],
+                ["Flexible temple visits", "Local food and shopping", "Depart at your pace"],
+            ],
+            "Mathura & Vrindavan": [
+                ["Shri Krishna Janmabhoomi", "Dwarkadhish Temple", "Yamuna ghat visit"],
+                ["Banke Bihari Temple", "ISKCON Vrindavan", "Prem Mandir illumination"],
+                ["Govardhan Parikrama", "Radha Kund", "Return to Vrindavan"],
+                ["Nidhivan area", "Seva Kunj", "Evening darshan at Prem Mandir"],
+                ["Barsana temples", "Nandgaon", "Return and rest"],
+                ["Revisit a favourite temple", "Local sweets and shopping", "Depart at your pace"],
+            ],
+        };
+        const itinerary = destinationItineraries[destination];
+        const staySuggestion = stay === "No preference"
+            ? `Choose a ${budget === "Under ₹10,000" ? "budget stay" : "stay that fits your budget"} near the main sightseeing area.`
+            : `A ${stay.toLowerCase()} near the main sightseeing area suits this trip.`;
         const cabSuggestion = cab === "Yes"
-            ? "A private cab can keep your darshan and sightseeing comfortable."
-            : "We will suggest places that are easy to cover without a cab.";
-        const staySuggestion = stay === "Dharamshala"
-            ? "A clean dharamshala near the temple route is a good fit."
-            : `A ${budget.toLowerCase()} hotel close to the main attractions is a good fit.`;
-        const plan = `${days}-day ${travellerType.toLowerCase()} trip with a ${budget.toLowerCase()} budget. ${staySuggestion} ${cabSuggestion}`;
+            ? "A cab is included for transfers between sightseeing stops."
+            : "Cab is not included; allow extra time for local transport between stops.";
+        const extendedTripNote = days === 6 ? " The itinerary shows the first 6 days; add flexible days to suit your trip." : "";
+        const plan = `${days === 6 ? "6+ days" : `${days} ${days === 1 ? "day" : "days"}`} in ${destination} for ${travellerType.toLowerCase()} travellers. Budget: ${budget} per person. ${staySuggestion} ${cabSuggestion}${extendedTripNote}`;
 
         if (aiPlanText) {
-            aiPlanText.textContent = plan;
+            aiPlanText.textContent = `${plan} This is a suggested outline; adjust the pace to suit your group.`;
+        }
+
+        if (aiPlanItinerary) {
+            aiPlanItinerary.replaceChildren();
+
+            itinerary.slice(0, days).forEach((stops, index) => {
+                const day = document.createElement("article");
+                day.className = "ai-plan-day";
+
+                const heading = document.createElement("h4");
+                heading.textContent = `Day ${index + 1}`;
+
+                const list = document.createElement("ul");
+                ["Morning", "Afternoon", "Evening"].forEach((period, stopIndex) => {
+                    const item = document.createElement("li");
+                    const time = document.createElement("strong");
+                    time.textContent = `${period}: `;
+                    item.append(time, document.createTextNode(stops[stopIndex]));
+                    list.append(item);
+                });
+
+                day.append(heading, list);
+                aiPlanItinerary.append(day);
+            });
         }
 
         if (aiPlanResult) {
@@ -513,7 +563,10 @@ if (aiTripPlannerForm) {
         }
 
         if (aiPlanWhatsApp) {
-            const message = `Hello Ramnagari Tourism, I need help with my trip plan:\n- Budget: ${budget}\n- Days: ${days}\n- Traveller: ${travellerType}\n- Stay: ${stay}\n- Cab required: ${cab}`;
+            const itineraryMessage = itinerary.slice(0, days)
+                .map((stops, index) => `Day ${index + 1}: Morning - ${stops[0]}; Afternoon - ${stops[1]}; Evening - ${stops[2]}`)
+                .join("\n");
+            const message = `Hello Ramnagari Tourism, please help me plan this trip:\n- Destination: ${destination}\n- Budget per person: ${budget}\n- Days: ${days === 6 ? "6+" : days}\n- Travelling with: ${travellerType}\n- Stay preference: ${stay}\n- Cab required: ${cab}\n\nSuggested itinerary:\n${itineraryMessage}`;
             aiPlanWhatsApp.href = `https://wa.me/917607745628?text=${encodeURIComponent(message)}`;
         }
     });
@@ -626,7 +679,9 @@ function getSavedReviews() {
     try {
         const savedReviews = JSON.parse(localStorage.getItem(reviewsStorageKey) || "[]");
         const validReviews = Array.isArray(savedReviews) ? savedReviews : [];
-        const approvedReviews = validReviews.filter((review) => Number(review.rating) >= minimumReviewRating);
+        const approvedReviews = validReviews.filter((review) =>
+            Number(review.rating) >= minimumReviewRating && !unverifiedReviewIds.has(Number(review.id))
+        );
 
         if (approvedReviews.length !== validReviews.length) {
             localStorage.setItem(reviewsStorageKey, JSON.stringify(approvedReviews));
@@ -663,19 +718,6 @@ async function sendFormSubmitEmail(form) {
 
     const result = await response.json().catch(() => null);
     return result?.success === true || result?.success === "true";
-}
-
-function seedDefaultReviews() {
-    if (localStorage.getItem(reviewsSeededKey) === "true") {
-        return;
-    }
-
-    const savedReviews = getSavedReviews();
-    const savedReviewIds = new Set(savedReviews.map((review) => review.id));
-    const missingDefaultReviews = defaultReviews.filter((review) => !savedReviewIds.has(review.id));
-    saveReviews([...missingDefaultReviews, ...savedReviews]);
-
-    localStorage.setItem(reviewsSeededKey, "true");
 }
 
 function escapeReviewText(value) {
@@ -729,7 +771,6 @@ function renderReviews() {
 }
 
 if (reviewForm) {
-    seedDefaultReviews();
     renderReviews();
 
     reviewForm.addEventListener("submit", async (event) => {
@@ -1135,8 +1176,8 @@ function buildInfoWindowContent(location, distance, travelTime) {
     const walkingUrl = `https://www.google.com/maps/dir/?api=1&origin=Current+Location&destination=${location.lat},${location.lng}&travelmode=walking`;
     const drivingUrl = `https://www.google.com/maps/dir/?api=1&origin=Current+Location&destination=${location.lat},${location.lng}&travelmode=driving`;
     const hotelCta = location.type === "hotels"
-        ? `<a class="map-action-btn" href="pages/booking.html">Book Now</a>`
-        : `<a class="map-action-btn" href="pages/hotels.html">Book Nearby Hotel</a>`;
+        ? `<a class="map-action-btn" href="booking1.html">Book Now</a>`
+        : `<a class="map-action-btn" href="hotels.html">Book Nearby Hotel</a>`;
 
     return `
         <div style="max-width: 330px; font-family: 'Manrope', sans-serif;">

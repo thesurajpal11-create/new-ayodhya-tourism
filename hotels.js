@@ -232,7 +232,7 @@ function hotelOptionTemplate(option, index) {
             <div class="hotel-listing-body">
                 <div class="hotel-listing-main">
                     <h2 class="hotel-listing-name">
-                        <a href="booking.html">${escapeHtml(option.display_name)}</a>
+                        <a href="booking1.html">${escapeHtml(option.display_name)}</a>
                         ${renderStars(starCount)}
                     </h2>
                     <div class="hotel-listing-location">
@@ -262,7 +262,7 @@ function hotelOptionTemplate(option, index) {
                         <strong class="hotel-price-value">${price ? formatRupees(price) : "Contact for price"}</strong>
                         <span class="hotel-price-unit">${escapeHtml(priceLabel)} · per room / night</span>
                     </div>
-                    <a href="booking.html" class="hotel-select-dates-btn">Select dates</a>
+                    <a href="booking1.html" class="hotel-select-dates-btn">Select dates</a>
                 </aside>
             </div>
         </article>
