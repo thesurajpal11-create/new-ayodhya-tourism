@@ -40,7 +40,7 @@ const deepotsavSection = document.getElementById("deepotsav-package");
 const floatingContact = document.querySelector(".floating-contact");
 const reviewsStorageKey = "ramnagariTourismReviews";
 const minimumReviewRating = 4;
-const unverifiedReviewIds = new Set([1704101400001, 1704101400002, 1704101400003, 1704101400004]);
+const legacyDemoReviewIds = new Set([1704101400001, 1704101400002, 1704101400003, 1704101400004]);
 
 let currentSlideIndex = 0;
 let sliderIntervalId = null;
@@ -680,7 +680,7 @@ function getSavedReviews() {
         const savedReviews = JSON.parse(localStorage.getItem(reviewsStorageKey) || "[]");
         const validReviews = Array.isArray(savedReviews) ? savedReviews : [];
         const approvedReviews = validReviews.filter((review) =>
-            Number(review.rating) >= minimumReviewRating && !unverifiedReviewIds.has(Number(review.id))
+            Number(review.rating) >= minimumReviewRating && !legacyDemoReviewIds.has(Number(review.id))
         );
 
         if (approvedReviews.length !== validReviews.length) {
@@ -695,6 +695,11 @@ function getSavedReviews() {
 
 function saveReviews(reviews) {
     localStorage.setItem(reviewsStorageKey, JSON.stringify(reviews));
+}
+
+function getReviewsApiUrl() {
+    const apiBase = window.RAMNAGARI_API_BASE_URL || "";
+    return apiBase ? `${apiBase.replace(/\/+$/, "")}/api/reviews` : "";
 }
 
 async function sendFormSubmitEmail(form) {
@@ -733,12 +738,10 @@ function escapeReviewText(value) {
     });
 }
 
-function renderReviews() {
+function renderReviews(reviews = getSavedReviews()) {
     if (!reviewList || !reviewSummary) {
         return;
     }
-
-    const reviews = getSavedReviews();
 
     if (!reviews.length) {
         reviewSummary.textContent = "No reviews yet.";
@@ -770,8 +773,42 @@ function renderReviews() {
         .join("");
 }
 
+async function loadPublishedReviews() {
+    const apiUrl = getReviewsApiUrl();
+    if (!apiUrl) {
+        renderReviews();
+        return;
+    }
+
+    try {
+        const response = await fetch(apiUrl, { headers: { Accept: "application/json" } });
+        if (!response.ok) {
+            throw new Error("The shared reviews could not be loaded.");
+        }
+
+        const responseReviews = await response.json();
+        if (!Array.isArray(responseReviews)) {
+            throw new Error("The review service returned an invalid response.");
+        }
+
+        const reviews = responseReviews.map((review) => ({
+            ...review,
+            createdAt: review.created_at || review.createdAt,
+        }));
+        saveReviews(reviews);
+        renderReviews(reviews);
+    } catch (error) {
+        renderReviews();
+        if (reviewFeedback) {
+            reviewFeedback.textContent = "Shared reviews could not load. Please refresh the page to try again.";
+            reviewFeedback.className = "form-feedback error";
+        }
+    }
+}
+
 if (reviewForm) {
     renderReviews();
+    loadPublishedReviews();
 
     reviewForm.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -807,43 +844,88 @@ if (reviewForm) {
             return;
         }
 
-        const reviews = getSavedReviews();
-        reviews.unshift({
-            id: Date.now(),
-            name: nameInput.value.trim(),
-            rating,
-            message: messageInput.value.trim(),
-            createdAt: new Date().toISOString(),
-        });
-        saveReviews(reviews);
-        renderReviews();
-
-        if (reviewFeedback) {
-            reviewFeedback.textContent = "Review saved. Sending to Ramnagari Tourism...";
-            reviewFeedback.className = "form-feedback success";
-        }
-
         if (submitButton) {
             submitButton.disabled = true;
         }
 
-        try {
-            const emailSent = await sendFormSubmitEmail(reviewForm);
+        const apiUrl = getReviewsApiUrl();
+        const reviewPayload = {
+            name: nameInput.value.trim(),
+            rating,
+            message: messageInput.value.trim(),
+            website: reviewForm.querySelector("[name='website']")?.value || "",
+        };
 
-            if (reviewFeedback) {
-                reviewFeedback.textContent = emailSent
-                    ? "Review saved and sent to Ramnagari Tourism."
-                    : "Review saved on this device.";
-                reviewFeedback.className = "form-feedback success";
+        try {
+            let emailSent = false;
+
+            if (apiUrl) {
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                    body: JSON.stringify(reviewPayload),
+                });
+                const result = await response.json();
+
+                if (!response.ok || !result.review) {
+                    throw new Error(result.detail || "The review could not be published.");
+                }
+
+                const publishedReview = {
+                    ...result.review,
+                    createdAt: result.review.created_at || result.review.createdAt,
+                };
+                const savedReviews = getSavedReviews().filter((review) => Number(review.id) !== Number(publishedReview.id));
+                savedReviews.unshift(publishedReview);
+                saveReviews(savedReviews);
+                renderReviews(savedReviews);
+
+                try {
+                    emailSent = await sendFormSubmitEmail(reviewForm);
+                } catch (error) {
+                    emailSent = false;
+                }
+
+                if (reviewFeedback) {
+                    reviewFeedback.textContent = emailSent
+                        ? "Your review is now live on the website."
+                        : "Your review is live. Email notification could not be confirmed.";
+                    reviewFeedback.className = "form-feedback success";
+                }
+            } else {
+                const savedReview = {
+                    id: Date.now(),
+                    ...reviewPayload,
+                    createdAt: new Date().toISOString(),
+                };
+                const savedReviews = [savedReview, ...getSavedReviews()];
+                saveReviews(savedReviews);
+                renderReviews(savedReviews);
+
+                try {
+                    emailSent = await sendFormSubmitEmail(reviewForm);
+                } catch (error) {
+                    emailSent = false;
+                }
+
+                if (reviewFeedback) {
+                    reviewFeedback.textContent = emailSent
+                        ? "Review sent to the team, but is saved only on this device until shared publishing is configured."
+                        : "Review is saved only on this device; shared website publishing is not configured yet.";
+                    reviewFeedback.className = "form-feedback error";
+                }
             }
+
+            reviewForm.reset();
         } catch (error) {
             if (reviewFeedback) {
-                reviewFeedback.textContent = "Review saved on this device. Email sending could not be confirmed.";
-                reviewFeedback.className = "form-feedback success";
+                reviewFeedback.textContent = error.message || "Review could not be published. Please try again.";
+                reviewFeedback.className = "form-feedback error";
             }
         } finally {
-            reviewForm.reset();
-
             if (submitButton) {
                 submitButton.disabled = false;
             }
