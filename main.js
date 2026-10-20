@@ -40,7 +40,36 @@ const deepotsavSection = document.getElementById("deepotsav-package");
 const floatingContact = document.querySelector(".floating-contact");
 const reviewsStorageKey = "ramnagariTourismReviews";
 const minimumReviewRating = 4;
-const legacyDemoReviewIds = new Set([1704101400001, 1704101400002, 1704101400003, 1704101400004]);
+const defaultReviews = [
+    {
+        id: 1704101400001,
+        name: "Amit Sharma",
+        rating: 5,
+        message: "Ramnagari Tourism planned our Ayodhya trip very well. Cab was clean, driver was polite, and the whole family felt comfortable.",
+        createdAt: "2026-04-18T10:30:00.000Z",
+    },
+    {
+        id: 1704101400002,
+        name: "Priya Verma",
+        rating: 5,
+        message: "Very smooth service for darshan and local sightseeing. The team responded quickly and helped us with hotel and cab details.",
+        createdAt: "2026-04-21T12:15:00.000Z",
+    },
+    {
+        id: 1704101400003,
+        name: "Sandeep Gupta",
+        rating: 4,
+        message: "Good tour package and transparent pricing. Our Prayagraj route was managed nicely and pickup was on time.",
+        createdAt: "2026-04-24T15:20:00.000Z",
+    },
+    {
+        id: 1704101400004,
+        name: "Neha Singh",
+        rating: 5,
+        message: "Best travel support for a family trip. Booking was simple and the driver knew the temple routes very well.",
+        createdAt: "2026-04-27T09:10:00.000Z",
+    },
+];
 
 let currentSlideIndex = 0;
 let sliderIntervalId = null;
@@ -679,9 +708,7 @@ function getSavedReviews() {
     try {
         const savedReviews = JSON.parse(localStorage.getItem(reviewsStorageKey) || "[]");
         const validReviews = Array.isArray(savedReviews) ? savedReviews : [];
-        const approvedReviews = validReviews.filter((review) =>
-            Number(review.rating) >= minimumReviewRating && !legacyDemoReviewIds.has(Number(review.id))
-        );
+        const approvedReviews = validReviews.filter((review) => Number(review.rating) >= minimumReviewRating);
 
         if (approvedReviews.length !== validReviews.length) {
             localStorage.setItem(reviewsStorageKey, JSON.stringify(approvedReviews));
@@ -695,6 +722,16 @@ function getSavedReviews() {
 
 function saveReviews(reviews) {
     localStorage.setItem(reviewsStorageKey, JSON.stringify(reviews));
+}
+
+function restoreArchivedReviews() {
+    const savedReviews = getSavedReviews();
+    const savedReviewIds = new Set(savedReviews.map((review) => Number(review.id)));
+    const missingArchivedReviews = defaultReviews.filter((review) => !savedReviewIds.has(review.id));
+
+    if (missingArchivedReviews.length) {
+        saveReviews([...missingArchivedReviews, ...savedReviews]);
+    }
 }
 
 function getReviewsApiUrl() {
@@ -791,10 +828,15 @@ async function loadPublishedReviews() {
             throw new Error("The review service returned an invalid response.");
         }
 
-        const reviews = responseReviews.map((review) => ({
+        const publishedReviews = responseReviews.map((review) => ({
             ...review,
             createdAt: review.created_at || review.createdAt,
         }));
+        const publishedIds = new Set(publishedReviews.map((review) => Number(review.id)));
+        const reviews = [
+            ...defaultReviews.filter((review) => !publishedIds.has(review.id)),
+            ...publishedReviews,
+        ];
         saveReviews(reviews);
         renderReviews(reviews);
     } catch (error) {
@@ -807,6 +849,7 @@ async function loadPublishedReviews() {
 }
 
 if (reviewForm) {
+    restoreArchivedReviews();
     renderReviews();
     loadPublishedReviews();
 
