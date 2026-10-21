@@ -1,5 +1,4 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
-const PARTNER_HOTEL_STORAGE_KEY = "ramnagariActivePartnerHotel";
 const PARTNER_EMAIL = "ayodhyaramnagritourism@gmail.com";
 
 const form = document.getElementById("partnerApplicationForm");
@@ -44,22 +43,6 @@ async function submitApplication(event) {
             throw new Error("Email could not be sent. Please try again.");
         }
 
-        const activeHotel = {
-            display_name: payload.hotel_name,
-            category: "Budget",
-            public_price: 0,
-            partner_price: 0,
-            rooms_available: payload.number_of_rooms,
-            distance_from_tour_km: 0,
-            nearby_place: payload.hotel_address,
-            amenities: ["Comfortable Rooms", "Hotel Partner Listing"],
-            check_in_time: "12:00 PM",
-            check_out_time: "11:00 AM",
-            image_url: payload.hotel_photos || "ayodhya.jpg",
-            destination_name: "Ayodhya",
-        };
-        window.localStorage.setItem(PARTNER_HOTEL_STORAGE_KEY, JSON.stringify(activeHotel));
-
         try {
             const response = await fetch(`${API_BASE_URL}/api/partners/applications`, {
                 method: "POST",
@@ -70,10 +53,10 @@ async function submitApplication(event) {
                 throw new Error("Backend application was not saved");
             }
         } catch (backendError) {
-            console.warn("Partner application API unavailable; email and listing were saved.", backendError);
+            console.warn("Partner application API unavailable; application email was sent.", backendError);
         }
         form.reset();
-        statusBox.textContent = "Details sent to your email and hotel added successfully. The previous listing was replaced.";
+        statusBox.textContent = "Thank you. Your application details have been emailed for review. Our team will contact you; your hotel will not be listed until it has been reviewed.";
         statusBox.className = "hotel-status success";
     } catch (error) {
         statusBox.textContent = error.message || "Unable to send hotel details. Please try again.";

@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotels | Ramnagari Tourism</title>
+    <title>Hotels in Ayodhya | Ramnagari Tourism</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Allura&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="theme.js"></script>
 </head>
-<body>
+<body class="hotel-page">
     <header class="site-header">
         <nav class="navbar" id="navbar">
             <div class="container nav-inner">
@@ -47,18 +48,40 @@
     <main>
         <section class="page-banner hotel-banner">
             <div class="container page-banner-content">
-                <span class="section-script">Hotel Options</span>
-                <h1>Choose hotel type, price, rooms, and distance from your tour place.</h1>
-                <p>Customers see hotel category and comfort details. Real hotel name and owner details stay private for admin.</p>
+                <span class="section-script">Stay in Ayodhya</span>
+                <h1>Find Your Perfect Stay in Ayodhya</h1>
+                <p>Discover comfortable stays for your spiritual journey and explore opportunities to partner with Ramnagri Tourism.</p>
+            </div>
+        </section>
+
+        <section class="section hotel-partner-section" id="hotel-partners">
+            <div class="container">
+                <div class="hotel-partner-card">
+                    <div class="hotel-partner-copy">
+                        <span class="hotel-eyebrow">For Ayodhya hotel owners</span>
+                        <h2>Partner With Ramnagri Tourism</h2>
+                        <p>List your hotel with us and connect with travellers visiting Ayodhya. Join our growing tourism network.</p>
+                        <a href="become-partner.html" class="btn btn-primary hotel-partner-cta">Become a Hotel Partner</a>
+                    </div>
+                    <ul class="hotel-partner-benefits">
+                        <li>Showcase your hotel to potential travellers.</li>
+                        <li>Receive booking enquiries through available channels.</li>
+                        <li>Present your room categories and pricing.</li>
+                        <li>Connect with customers looking for accommodation in Ayodhya.</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
         <section class="section hotel-browser-section">
             <div class="container">
-                <div class="content-card" style="margin-bottom: 20px;">
-                    <h2 style="margin-bottom: 8px;">View prices by role</h2>
-                    <p style="margin-bottom: 16px;">Customers see public pricing. Hotel partners see partner pricing.</p>
-                    <form class="hotel-filter-bar" id="hotelAuthForm">
+                <div class="content-card hotel-auth-card">
+                    <div class="hotel-auth-intro">
+                        <span class="hotel-eyebrow">Account access</span>
+                        <h2>Customer and hotel partner login</h2>
+                        <p>Sign in to view pricing for your account. Public pricing is shown when you are signed out.</p>
+                    </div>
+                    <form class="hotel-filter-bar hotel-auth-form" id="hotelAuthForm">
                         <label>
                             <span>Email</span>
                             <input type="email" id="hotelAuthEmail" placeholder="Enter your email" required>
@@ -68,7 +91,7 @@
                             <input type="password" id="hotelAuthPassword" placeholder="Enter your password" required>
                         </label>
                         <label>
-                            <span>Role</span>
+                            <span>Sign in as</span>
                             <select id="hotelAuthRole">
                                 <option value="customer">Customer</option>
                                 <option value="hotel_partner">Hotel Partner</option>
@@ -80,7 +103,7 @@
                     <div class="hotel-status" id="hotelAuthStatus">Public pricing is active.</div>
                 </div>
 
-                <form class="hotel-filter-bar" id="hotelFilterForm">
+                <form class="hotel-filter-bar hotel-search-form" id="hotelFilterForm">
                     <label>
                         <span>Destination</span>
                         <select id="hotelDestinationSelect" required>
@@ -99,29 +122,29 @@
                         </select>
                     </label>
 
-                    <button type="submit" class="btn btn-primary">View Hotels</button>
+                    <button type="submit" class="btn btn-primary">Search stays</button>
                 </form>
 
-                <div class="hotel-status" id="hotelStatus">Select a destination to view hotel options.</div>
-                <div class="hotel-options-grid" id="hotelOptionsGrid"></div>
+                <div class="hotel-status" id="hotelStatus" aria-live="polite">Select a destination to view hotel options.</div>
+                <div class="hotel-options-grid" id="hotelOptionsGrid" aria-live="polite"></div>
             </div>
         </section>
 
         <section class="section hotel-help-section">
             <div class="container simple-grid two-grid">
-                <article class="content-card">
-                    <h2>What customer can compare</h2>
+                <article class="content-card hotel-info-card">
+                    <span class="hotel-eyebrow">When stays are listed</span>
+                    <h2>What customers can compare</h2>
                     <ul>
                         <li>Hotel type: Budget, 2 Star, 3 Star, 4 Star</li>
-                        <li>Selling price per room</li>
-                        <li>Available rooms</li>
-                        <li>Distance from tour destination</li>
-                        <li>Nearby place, amenities, check-in and check-out timing</li>
+                        <li>Price per room</li>
+                        <li>Room availability, distance, amenities, and arrival times when provided by the hotel</li>
                     </ul>
                 </article>
-                <article class="content-card">
+                <article class="content-card hotel-info-card">
+                    <span class="hotel-eyebrow">Need help planning your stay?</span>
                     <h2>Ready to book?</h2>
-                    <p>After choosing a hotel option, customer can continue to secure booking and advance payment.</p>
+                    <p>Choose a listed stay to continue through the existing booking and payment flow. Your booking is confirmed only after the booking system or hotel confirms it.</p>
                     <div class="page-cta-row">
                         <a href="booking1.html" class="btn btn-primary">Book & Pay</a>
                         <a href="become-partner.html" class="btn btn-secondary">Become a Hotel Partner</a>

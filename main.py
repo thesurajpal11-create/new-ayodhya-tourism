@@ -60,7 +60,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 
 def seed_catalog_data(db: Session) -> None:
-    """Populate a small catalog when the database is empty so pages remain functional."""
+    """Ensure baseline destinations exist without creating sample hotel listings."""
     destination_count = db.query(Destination).count()
     if destination_count == 0:
         default_destinations = [
@@ -91,30 +91,6 @@ def seed_catalog_data(db: Session) -> None:
             username="admin",
         ))
         db.commit()
-
-    service_count = db.query(Service).count()
-    if service_count == 0:
-        destinations = db.query(Destination).all()
-        if destinations:
-            hotel_seed_data = [
-                (destinations[0].id, "Hotel", "Budget", "Comfort Stay Ayodhya", "Affordable stay near temple routes.", 1800, "per night", "../images/ayodhya.jpg", "Near temple route"),
-                (destinations[0].id, "Hotel", "3 Star", "Rama Heritage Hotel", "Premium stay with breakfast and pickup.", 3200, "per night", "../images/ayodhya.jpg", "Near Ram Mandir"),
-                (destinations[1].id if len(destinations) > 1 else destinations[0].id, "Hotel", "4 Star", "Ganga View Stay", "Comfortable riverside hotel in Varanasi.", 4800, "per night", "../images/varanasi.jpg", "Near Ganga ghat"),
-            ]
-            for destination_id, service_type, category, name, description, price, unit, image_url, contact_info in hotel_seed_data:
-                db.add(Service(
-                    destination_id=destination_id,
-                    service_type=service_type,
-                    category=category,
-                    name=name,
-                    description=description,
-                    price_per_unit=price,
-                    unit=unit,
-                    image_url=image_url,
-                    contact_info=contact_info,
-                ))
-            db.commit()
-
 
 # Initialize FastAPI
 app = FastAPI(title="Ayodhya Ramnagari Tourism API", version="1.0.0")
@@ -334,17 +310,23 @@ def get_booking(booking_id: int, user_info = Depends(verify_token), db: Session 
 service_router = APIRouter(prefix="/api/services", tags=["Services"])
 
 @service_router.get("/destination/{destination_id}")
-def get_destination_services(destination_id: int, db: Session = Depends(get_db)):
+def get_destination_services(destination_id: int, authorization: Optional[str] = Header(None), db: Session = Depends(get_db)):
     """Get services for a destination"""
+    auth_context = get_role_from_token(authorization) if authorization else None
+    role = auth_context["role"] if auth_context else "customer"
     services = db.query(Service).filter(Service.destination_id == destination_id).all()
     response = []
     for service in services:
         pricing = build_pricing(service.price_per_unit)
-        response.append({
-            **service.__dict__,
-            "public_price": pricing["public_price"],
-            "partner_price": pricing["partner_price"],
-        })
+        service_data = {
+            key: value
+            for key, value in service.__dict__.items()
+            if key not in {"_sa_instance_state", "partner_price"}
+        }
+        service_data["public_price"] = pricing["public_price"]
+        if role == "hotel_partner":
+            service_data["partner_price"] = pricing["partner_price"]
+        response.append(service_data)
     return response
 
 @service_router.post("/")
@@ -394,16 +376,9 @@ def get_catalog_hotel_options(destination_id: int, category: Optional[str] = Non
         options.append({
             "id": service.id,
             "display_name": service.name,
-            "category": service.category or "Budget",
+            "category": service.category,
             "selling_price_per_room": price_value,
-            "public_price": pricing["public_price"],
-            "partner_price": pricing["partner_price"],
-            "rooms_available": 10 + (service.id % 8),
-            "distance_from_tour_km": round(1 + (service.id % 5) * 0.4, 1),
-            "nearby_place": service.contact_info or "Tour centre",
-            "amenities": ["AC Room", "Free WiFi", "Breakfast"],
-            "check_in_time": "12:00 PM",
-            "check_out_time": "11:00 AM",
+            "description": service.description,
             "image_url": service.image_url,
         })
 

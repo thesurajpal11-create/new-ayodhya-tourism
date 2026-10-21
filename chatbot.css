@@ -11,6 +11,13 @@
   --radius-md: 12px;
 }
 
+html[data-theme="dark"] {
+  --bg-glass: rgba(24, 35, 45, 0.98);
+  --border-glass: rgba(255, 255, 255, 0.12);
+  --text-dark: #e7edf2;
+  --text-muted: #b5c2cd;
+}
+
 /* Floating Action Button */
 #chatbot-trigger {
   position: fixed;
@@ -135,6 +142,51 @@
   gap: 8px;
 }
 
+.chat-theme-toggle {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.chat-theme-toggle:hover,
+.chat-theme-toggle:focus-visible {
+  background: rgba(255, 255, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+.chat-theme-toggle:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.chat-theme-toggle .theme-toggle-icon {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.chat-theme-toggle .icon-sun,
+html[data-theme="dark"] .chat-theme-toggle .icon-moon {
+  display: none;
+}
+
+html[data-theme="dark"] .chat-theme-toggle .icon-sun {
+  display: block;
+}
+
 .chat-header-btn {
   background: transparent;
   border: none;
@@ -198,6 +250,12 @@
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+html[data-theme="dark"] .msg-wrapper.bot .msg-bubble {
+  background-color: #253541;
+  color: var(--text-dark);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
 .msg-time {
   font-size: 10px;
   color: var(--text-muted);
@@ -233,6 +291,12 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+html[data-theme="dark"] .quick-btn {
+  background-color: #253541;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--text-dark);
 }
 
 .quick-btn:hover {
@@ -275,6 +339,11 @@
   gap: 8px;
 }
 
+html[data-theme="dark"] .chat-footer {
+  background-color: #17232d;
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
 .chat-input {
   flex: 1;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -287,9 +356,19 @@
   transition: border-color 0.2s, background-color 0.2s;
 }
 
+html[data-theme="dark"] .chat-input {
+  border-color: #465966;
+  background-color: #15212a;
+  color: var(--text-dark);
+}
+
 .chat-input:focus {
   border-color: var(--primary-color);
   background-color: #ffffff;
+}
+
+html[data-theme="dark"] .chat-input:focus {
+  background-color: #1b2933;
 }
 
 .chat-send-btn {

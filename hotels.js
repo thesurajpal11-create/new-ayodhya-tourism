@@ -25,55 +25,6 @@ const DESTINATION_IMAGES = {
     kashi: "../images/varanasi.jpg",
 };
 
-const CATEGORY_SCORES = {
-    Budget: 6.4,
-    "2 Star": 7.0,
-    "3 Star": 7.8,
-    "4 Star": 8.5,
-};
-
-const DEMO_HOTEL_OPTIONS = [
-    {
-        display_name: "Ramna Residency",
-        category: "3 Star",
-        selling_price_per_room: 3200,
-        public_price: 3200,
-        partner_price: 3040,
-        rooms_available: 18,
-        distance_from_tour_km: 1.2,
-        nearby_place: "Ram Mandir road",
-        amenities: ["AC Room", "Free WiFi", "Parking", "Breakfast"],
-        check_in_time: "12:00 PM",
-        check_out_time: "11:00 AM",
-    },
-    {
-        display_name: "Hotel Ramlalla Palace",
-        category: "4 Star",
-        selling_price_per_room: 4800,
-        public_price: 4800,
-        partner_price: 4560,
-        rooms_available: 12,
-        distance_from_tour_km: 1.7,
-        nearby_place: "Ayodhya city centre",
-        amenities: ["AC Room", "WiFi", "Restaurant", "Room Service"],
-        check_in_time: "1:00 PM",
-        check_out_time: "11:00 AM",
-    },
-    {
-        display_name: "Comfort Budget Stay",
-        category: "Budget",
-        selling_price_per_room: 1800,
-        public_price: 1800,
-        partner_price: 1710,
-        rooms_available: 22,
-        distance_from_tour_km: 2.4,
-        nearby_place: "Bus stand area",
-        amenities: ["Clean Room", "Hot Water", "Parking"],
-        check_in_time: "12:00 PM",
-        check_out_time: "10:00 AM",
-    },
-];
-
 let selectedDestinationName = "";
 let currentAuth = null;
 
@@ -95,10 +46,7 @@ function clearAuthSession() {
 }
 
 function getCurrentPrice(option) {
-    if (currentAuth?.role === "hotel_partner") {
-        return option.partner_price ?? option.selling_price_per_room ?? option.public_price ?? 0;
-    }
-    return option.public_price ?? option.selling_price_per_room ?? 0;
+    return option.selling_price_per_room ?? option.public_price ?? 0;
 }
 
 function getCurrentPriceLabel() {
@@ -138,6 +86,80 @@ function setAuthStatus(message, type = "") {
     }
     authStatus.textContent = message;
     authStatus.className = `hotel-status ${type}`.trim();
+}
+
+function updateFloatingContactVisibility() {
+    const floatingContact = document.querySelector(".hotel-page .floating-contact");
+    if (!floatingContact) {
+        return;
+    }
+
+    floatingContact.classList.remove("is-hidden");
+    const contactRect = floatingContact.getBoundingClientRect();
+    const targets = document.querySelectorAll([
+        ".hotel-banner h1",
+        ".hotel-banner p",
+        ".hotel-partner-card h2",
+        ".hotel-partner-card p",
+        ".hotel-partner-benefits li",
+        ".hotel-auth-card h2",
+        ".hotel-auth-card p",
+        ".hotel-auth-card label",
+        ".hotel-auth-card input",
+        ".hotel-auth-card select",
+        ".hotel-auth-card button",
+        ".hotel-search-form label",
+        ".hotel-search-form input",
+        ".hotel-search-form select",
+        ".hotel-search-form button",
+        ".hotel-empty-copy h2",
+        ".hotel-empty-copy p",
+        ".hotel-empty-copy a",
+        ".hotel-listing-card",
+        ".hotel-info-card h2",
+        ".hotel-info-card p",
+        ".hotel-info-card li",
+        ".hotel-info-card a",
+        ".footer-brand p",
+        ".footer-contact a",
+        ".footer-contact span",
+        ".footer-bottom p",
+    ].join(", "));
+    const overlapsContact = Array.from(targets).some((target) => {
+        const range = document.createRange();
+        range.selectNodeContents(target);
+        const textRects = Array.from(range.getClientRects());
+        const rects = textRects.length ? textRects : [target.getBoundingClientRect()];
+
+        return rects.some((rect) => (
+            rect.width > 0
+            && rect.height > 0
+            && rect.right > contactRect.left
+            && rect.left < contactRect.right
+            && rect.bottom > contactRect.top
+            && rect.top < contactRect.bottom
+        ));
+    });
+
+    floatingContact.classList.toggle("is-hidden", overlapsContact);
+}
+
+function bindFloatingContactVisibility() {
+    let updatePending = false;
+    const scheduleUpdate = () => {
+        if (updatePending) {
+            return;
+        }
+        updatePending = true;
+        window.requestAnimationFrame(() => {
+            updatePending = false;
+            updateFloatingContactVisibility();
+        });
+    };
+
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    updateFloatingContactVisibility();
 }
 
 function escapeHtml(value) {
@@ -194,13 +216,32 @@ function getRatingLabel(score) {
 }
 
 function buildDescription(option, destinationName) {
-    const amenitiesText = option.amenities?.length
-        ? option.amenities.slice(0, 4).join(", ")
-        : "comfortable rooms with essential amenities";
-    const nearby = option.nearby_place || "main sightseeing area";
-    const distance = option.distance_from_tour_km ?? "1.5";
+    const details = [`Located in ${escapeHtml(destinationName)}`];
+    if (option.description) {
+        details.push(escapeHtml(option.description));
+    }
+    if (option.distance_from_tour_km !== undefined && option.distance_from_tour_km !== null) {
+        details.push(`${escapeHtml(option.distance_from_tour_km)} km from the tour centre`);
+    }
+    if (option.nearby_place) {
+        details.push(`near ${escapeHtml(option.nearby_place)}`);
+    }
+    if (option.category) {
+        details.push(`${escapeHtml(option.category)} stay`);
+    }
+    if (option.amenities?.length) {
+        details.push(`Amenities include ${escapeHtml(option.amenities.slice(0, 4).join(", "))}`);
+    }
+    if (option.check_in_time) {
+        details.push(`Check-in ${escapeHtml(option.check_in_time)}`);
+    }
+    if (option.check_out_time) {
+        details.push(`check-out ${escapeHtml(option.check_out_time)}`);
+    }
 
-    return `Situated in ${escapeHtml(destinationName)}, ${escapeHtml(distance)} km from the tour centre near ${escapeHtml(nearby)}. ${escapeHtml(option.category)} stay with ${escapeHtml(amenitiesText)}. Check-in ${escapeHtml(option.check_in_time)}, check-out ${escapeHtml(option.check_out_time)}.`;
+    return details.length > 1
+        ? `${details.join(". ")}.`
+        : "Contact us for verified details about this stay.";
 }
 
 function getMapLink(destinationName, nearbyPlace) {
@@ -209,19 +250,24 @@ function getMapLink(destinationName, nearbyPlace) {
 }
 
 function hotelOptionTemplate(option, index) {
-    const score = CATEGORY_SCORES[option.category] ?? 7.2;
-    const ratingLabel = getRatingLabel(score);
-    const reviewCount = Math.max(1, (option.rooms_available || 5) % 12 + 1);
-    const starCount = getStarCount(option.category);
-    const imageSrc = option.image_url || getDestinationImage(selectedDestinationName, index);
+    const imageSrc = option.image_url || "hotel.jpg";
     const mapLink = getMapLink(selectedDestinationName, option.nearby_place);
     const price = getCurrentPrice(option);
     const priceLabel = getCurrentPriceLabel();
+    const distanceLabel = option.distance_from_tour_km !== undefined && option.distance_from_tour_km !== null
+        ? `<span>${escapeHtml(option.distance_from_tour_km)} km from centre</span>`
+        : "";
+    const categoryTag = option.category
+        ? `<span class="hotel-category-pill">${escapeHtml(option.category)}</span>`
+        : "";
+    const roomsTag = option.rooms_available !== undefined && option.rooms_available !== null
+        ? `<span class="hotel-tag">${escapeHtml(option.rooms_available)} rooms available</span>`
+        : "";
 
     return `
         <article class="hotel-listing-card">
             <div class="hotel-listing-image">
-                <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(option.display_name)}" loading="lazy" onerror="this.src='../images/ayodhya.jpg'">
+                <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(option.image_url ? option.display_name : "Illustrative hotel image")}" loading="lazy" onerror="this.onerror=null;this.src='hotel.jpg'">
                 <button type="button" class="hotel-fav-btn" aria-label="Save to favourites">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="currentColor" stroke-width="1.5"/>
@@ -233,30 +279,21 @@ function hotelOptionTemplate(option, index) {
                 <div class="hotel-listing-main">
                     <h2 class="hotel-listing-name">
                         <a href="booking1.html">${escapeHtml(option.display_name)}</a>
-                        ${renderStars(starCount)}
                     </h2>
                     <div class="hotel-listing-location">
                         <a href="destinations.html" class="hotel-location-link">${escapeHtml(selectedDestinationName)}</a>
                         <span class="hotel-location-dot">·</span>
-                        <a href="${mapLink}" class="hotel-location-link" target="_blank" rel="noopener">Show on map</a>
-                        <span class="hotel-location-dot">·</span>
-                        <span>${escapeHtml(option.distance_from_tour_km)} km from centre</span>
+                        <a href="${mapLink}" class="hotel-location-link" target="_blank" rel="noopener">${option.nearby_place ? "Show on map" : "View destination map"}</a>
+                        ${distanceLabel ? `<span class="hotel-location-dot">·</span>${distanceLabel}` : ""}
                     </div>
                     <p class="hotel-listing-desc">${buildDescription(option, selectedDestinationName)}</p>
                     <div class="hotel-listing-tags">
-                        <span class="hotel-category-pill">${escapeHtml(option.category)}</span>
-                        <span class="hotel-tag">${escapeHtml(option.rooms_available)} rooms available</span>
+                        ${categoryTag}
+                        ${roomsTag}
                     </div>
                 </div>
 
                 <aside class="hotel-listing-aside">
-                    <div class="hotel-listing-rating">
-                        <div class="hotel-rating-text">
-                            <strong>${ratingLabel}</strong>
-                            <span>${reviewCount} review${reviewCount > 1 ? "s" : ""}</span>
-                        </div>
-                        <div class="hotel-rating-score">${score.toFixed(1)}</div>
-                    </div>
                     <div class="hotel-listing-price">
                         <span class="hotel-price-label">From</span>
                         <strong class="hotel-price-value">${price ? formatRupees(price) : "Contact for price"}</strong>
@@ -271,8 +308,7 @@ function hotelOptionTemplate(option, index) {
 
 function renderHotelOptions(options) {
     if (!options.length) {
-        setHotelStatus("No hotel options found for this destination and type.", "error");
-        hotelOptionsGrid.innerHTML = "";
+        renderDemoHotels();
         return;
     }
 
@@ -280,21 +316,25 @@ function renderHotelOptions(options) {
     setHotelStatus(`${options.length} propert${options.length > 1 ? "ies" : "y"} found in ${selectedDestinationName}. Showing ${pricingContext} pricing.`, "success");
     hotelOptionsGrid.innerHTML = options.map((option, index) => hotelOptionTemplate(option, index)).join("");
     bindFavoriteButtons();
+    updateFloatingContactVisibility();
 }
 
 function renderDemoHotels() {
-    const activeHotel = getActivePartnerHotel();
-    selectedDestinationName = activeHotel?.destination_name || selectedDestinationName || "Ayodhya";
-    destinationSelect.innerHTML = `<option value="partner">${escapeHtml(selectedDestinationName)}</option>`;
-
-    if (activeHotel) {
-        setHotelStatus("Showing the latest hotel partner listing.", "success");
-        renderHotelOptions([activeHotel]);
-        return;
-    }
-
-    setHotelStatus("No hotel listing is available yet. Become a hotel partner to add one.");
-    hotelOptionsGrid.innerHTML = "";
+    setHotelStatus("Hotel listings are not available yet.");
+    hotelOptionsGrid.innerHTML = `
+        <article class="hotel-empty-state">
+            <div class="hotel-empty-image">
+                <img src="hotel.jpg" alt="A welcoming hotel in Ayodhya" loading="lazy">
+            </div>
+            <div class="hotel-empty-copy">
+                <span class="hotel-eyebrow">A place to stay is on the way</span>
+                <h2>Hotel Listings Coming Soon</h2>
+                <p>We are welcoming hotel partners to our platform. Check back soon for accommodation options in Ayodhya.</p>
+                <a href="become-partner.html" class="btn btn-primary">Become a Hotel Partner</a>
+            </div>
+        </article>
+    `;
+    updateFloatingContactVisibility();
 }
 
 function bindFavoriteButtons() {
@@ -341,25 +381,18 @@ async function loadDestinations() {
             await loadHotelOptions();
         } else {
             setHotelStatus("No destinations are available right now.", "error");
+            hotelOptionsGrid.innerHTML = "";
+            updateFloatingContactVisibility();
         }
     } catch (error) {
-        destinationSelect.innerHTML = '<option value="demo">Ayodhya</option>';
-        renderDemoHotels();
+        destinationSelect.innerHTML = '<option value="">Destinations unavailable</option>';
+        setHotelStatus("Could not load destinations. Please try again in a moment.", "error");
+        hotelOptionsGrid.innerHTML = "";
+        updateFloatingContactVisibility();
     }
 }
 
 async function loadHotelOptions() {
-    const activeHotel = getActivePartnerHotel();
-    if (activeHotel) {
-        selectedDestinationName = activeHotel.destination_name || "Ayodhya";
-        destinationSelect.innerHTML = `<option value="partner">${escapeHtml(selectedDestinationName)}</option>`;
-        renderHotelOptions([activeHotel]);
-        return;
-    }
-
-    renderDemoHotels();
-    return;
-
     const destinationId = destinationSelect.value;
     const category = categorySelect.value;
     const selectedOption = destinationSelect.selectedOptions[0];
@@ -368,11 +401,13 @@ async function loadHotelOptions() {
     if (!destinationId) {
         setHotelStatus("Select a destination to view hotel options.");
         hotelOptionsGrid.innerHTML = "";
+        updateFloatingContactVisibility();
         return;
     }
 
     setHotelStatus("Loading hotel options...");
     hotelOptionsGrid.innerHTML = "";
+    updateFloatingContactVisibility();
 
     const params = new URLSearchParams({ destination_id: destinationId });
     if (category) {
@@ -392,7 +427,9 @@ async function loadHotelOptions() {
         const options = await response.json();
         renderHotelOptions(options);
     } catch (error) {
-        renderDemoHotels();
+        setHotelStatus("Could not load hotel options. Please try again in a moment.", "error");
+        hotelOptionsGrid.innerHTML = "";
+        updateFloatingContactVisibility();
     }
 }
 
@@ -462,4 +499,5 @@ if (authLogoutBtn) {
 
 currentAuth = loadAuthSession();
 updateAuthUi();
+bindFloatingContactVisibility();
 loadDestinations();
