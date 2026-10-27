@@ -88,6 +88,171 @@ const estimateText = document.getElementById("cabEstimateText");
 const rateResults = document.getElementById("cabRateResults");
 const routeSummary = document.getElementById("cabRouteSummary");
 const ratePlaceholder = document.getElementById("cabRatePlaceholder");
+const cabPartnerDialog = document.getElementById("cabPartnerDialog");
+const cabPartnerForm = document.getElementById("cabPartnerForm");
+const cabPartnerSubmit = document.getElementById("cabPartnerSubmit");
+const cabPartnerFormStatus = document.getElementById("cabPartnerFormStatus");
+const cabPartnerStatus = document.getElementById("cabPartnerStatus");
+const cabPartnerStartedAt = document.getElementById("cabPartnerFormStartedAt");
+const cabPartnerSubmissionId = document.getElementById("cabPartnerSubmissionId");
+const cabPartnerOwnerDriver = document.getElementById("cabPartnerOwnerDriver");
+const cabPartnerLicenceField = document.getElementById("cabPartnerLicenceField");
+const cabPartnerLicenceDetails = document.getElementById("cabPartnerLicenceDetails");
+
+function createCabPartnerSubmissionId() {
+    if (window.crypto?.randomUUID) {
+        return window.crypto.randomUUID();
+    }
+
+    const bytes = new Uint8Array(16);
+    window.crypto.getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = [...bytes].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+
+function setCabPartnerStatus(element, message, isError = false) {
+    if (!element) {
+        return;
+    }
+
+    element.textContent = message;
+    element.classList.toggle("is-error", isError);
+}
+
+function resetCabPartnerFormClock() {
+    if (cabPartnerStartedAt) {
+        cabPartnerStartedAt.value = String(Date.now());
+    }
+    if (cabPartnerSubmissionId) {
+        cabPartnerSubmissionId.value = createCabPartnerSubmissionId();
+    }
+}
+
+function updateCabPartnerDriverFields() {
+    if (!cabPartnerOwnerDriver || !cabPartnerLicenceField || !cabPartnerLicenceDetails) {
+        return;
+    }
+
+    const driverIsOwner = cabPartnerOwnerDriver.value === "true";
+    cabPartnerLicenceField.hidden = !driverIsOwner;
+    cabPartnerLicenceDetails.required = driverIsOwner;
+    if (!driverIsOwner) {
+        cabPartnerLicenceDetails.value = "";
+    }
+}
+
+function initializeCabPartnerRegistration() {
+    const openButton = document.getElementById("openCabPartnerRegistration");
+    const closeButton = document.getElementById("closeCabPartnerRegistration");
+    const vehiclePhoto = cabPartnerForm?.elements.namedItem("vehicle_photo");
+    const serviceChecks = cabPartnerForm?.querySelectorAll("input[name='service_types']");
+    const phoneFields = cabPartnerForm?.querySelectorAll("input[name='mobile_number'], input[name='whatsapp_number']");
+
+    if (!cabPartnerDialog || !cabPartnerForm || !cabPartnerSubmit) {
+        return;
+    }
+
+    const currentYearInput = cabPartnerForm.elements.namedItem("manufacturing_year");
+    if (currentYearInput) {
+        currentYearInput.max = String(new Date().getFullYear());
+    }
+
+    openButton?.addEventListener("click", () => {
+        setCabPartnerStatus(cabPartnerStatus, "");
+        setCabPartnerStatus(cabPartnerFormStatus, "");
+        resetCabPartnerFormClock();
+        cabPartnerDialog.showModal();
+    });
+
+    closeButton?.addEventListener("click", () => cabPartnerDialog.close());
+    cabPartnerOwnerDriver?.addEventListener("change", updateCabPartnerDriverFields);
+    updateCabPartnerDriverFields();
+    phoneFields?.forEach((field) => {
+        field.addEventListener("input", () => field.setCustomValidity(""));
+    });
+
+    cabPartnerForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (cabPartnerSubmit.disabled) {
+            return;
+        }
+
+        let invalidPhone = null;
+        phoneFields?.forEach((field) => {
+            field.setCustomValidity("");
+            const digits = field.value.replace(/\D/g, "");
+            if (!/^[0-9+() -]{10,20}$/.test(field.value.trim()) || digits.length < 10 || digits.length > 15) {
+                field.setCustomValidity("Enter a valid phone number.");
+                invalidPhone = invalidPhone || field;
+            }
+        });
+        if (invalidPhone) {
+            invalidPhone.reportValidity();
+            invalidPhone.focus();
+            return;
+        }
+
+        if (!cabPartnerForm.reportValidity()) {
+            return;
+        }
+
+        if (serviceChecks && ![...serviceChecks].some((checkbox) => checkbox.checked)) {
+            setCabPartnerStatus(cabPartnerFormStatus, "Select at least one service type.", true);
+            serviceChecks[0]?.focus();
+            return;
+        }
+
+        if (vehiclePhoto instanceof HTMLInputElement && vehiclePhoto.files?.[0]) {
+            const photo = vehiclePhoto.files[0];
+            const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+            if (!allowedTypes.includes(photo.type) || photo.size > 5 * 1024 * 1024) {
+                setCabPartnerStatus(cabPartnerFormStatus, "Choose a JPEG, PNG, or WebP vehicle photo up to 5 MB.", true);
+                vehiclePhoto.focus();
+                return;
+            }
+        }
+
+        const originalLabel = cabPartnerSubmit.textContent || "Submit Registration";
+        cabPartnerSubmit.disabled = true;
+        cabPartnerSubmit.textContent = "Submitting registration...";
+        setCabPartnerStatus(cabPartnerFormStatus, "Sending your registration securely for review...");
+        setCabPartnerStatus(cabPartnerStatus, "");
+
+        const localHost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+        const apiBase = window.RAMNAGARI_API_BASE_URL || (localHost ? "http://127.0.0.1:8000" : window.location.origin);
+
+        try {
+            const response = await fetch(`${apiBase.replace(/\/+$/, "")}/api/cab-partners/registrations`, {
+                method: "POST",
+                headers: { Accept: "application/json" },
+                body: new FormData(cabPartnerForm),
+            });
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok || result.success !== true) {
+                throw new Error(result.detail || "We could not submit your registration. Please try again or contact Ramnagri Tourism.");
+            }
+
+            cabPartnerForm.reset();
+            resetCabPartnerFormClock();
+            updateCabPartnerDriverFields();
+            cabPartnerDialog.close();
+            setCabPartnerStatus(cabPartnerFormStatus, "");
+            setCabPartnerStatus(cabPartnerStatus, result.message || "Your registration was sent for manual review. Your vehicle has not been listed or verified.");
+        } catch (error) {
+            setCabPartnerStatus(
+                cabPartnerFormStatus,
+                error instanceof Error ? error.message : "We could not submit your registration. Please try again or contact Ramnagri Tourism.",
+                true
+            );
+        } finally {
+            cabPartnerSubmit.disabled = false;
+            cabPartnerSubmit.textContent = originalLabel;
+        }
+    });
+}
 
 function routeKey(sourceId, destinationId) {
     return [sourceId, destinationId].sort().join("|");
@@ -360,6 +525,33 @@ if (swapRouteButton) {
 if (estimateButton) {
     estimateButton.addEventListener("click", showEstimate);
 }
+
+document.querySelectorAll(".cab-view-route").forEach((button) => {
+    button.addEventListener("click", () => {
+        const destination = button.dataset.routeDestination;
+        const routeStatus = document.getElementById("cabRouteStatus");
+
+        if (!sourceSelect || !destinationSelect || !destination) {
+            return;
+        }
+
+        sourceSelect.value = "Ayodhya";
+        destinationSelect.value = destination;
+        handleRouteChange();
+
+        if (routeStatus) {
+            routeStatus.textContent = `Ayodhya to ${destination} is ready in the fare planner. Select who is travelling and choose Get Estimate.`;
+        }
+
+        document.getElementById("cabRouteForm")?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+        });
+        travelTypeSelect?.focus({ preventScroll: true });
+    });
+});
+
+initializeCabPartnerRegistration();
 
 [sourceSelect, destinationSelect, tripTypeSelect, travelTypeSelect, pickupDateInput].forEach((element) => {
     element?.addEventListener("change", handleRouteChange);
